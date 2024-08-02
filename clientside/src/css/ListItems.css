@@ -1,0 +1,78 @@
+#jsonTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#jsonTable th,
+#jsonTable td {
+  border: 1px solid #dddddd;
+  padding: 8px 28px;
+  text-align: left; /* 文本列左对齐 */
+}
+
+#jsonTable th {
+  text-align: center; /* 标题居中 */
+}
+#jsonTable td:nth-child(1) { /* 第1列ID中对齐 */
+   text-align: center;
+}
+#jsonTable td:nth-child(4) { /* 第四列（数字列）右对齐 */
+  text-align: right;
+}
+#jsonTable td:nth-child(5) { /* 第四列（数字列）右对齐 */
+  text-align: right;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  z-index: 1; /* 设置堆叠顺序 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* 使用半透明背景遮罩 */
+}
+
+/* Modal content styles */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 让 modal 居中 */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* modal 宽度 */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* 添加阴影效果 */
+}
+
+/* Label styles */
+label {
+  color: #000; /* 设置 label 的颜色为黑色 */
+}
+
+h2 {
+  color: #000; /* 设置 label 的颜色为黑色 */
+}
+
+.editTable {
+  margin: 0 auto; /* 水平居中 */
+}
+
+.editTable td {
+  text-align: center; /* 文本水平居中 */
+}
+
+/* Button styles */
+button {
+  background-color: #7f837f; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #45a049; /* 鼠标悬停时的背景色 */
+}
