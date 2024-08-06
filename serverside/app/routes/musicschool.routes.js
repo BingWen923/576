@@ -43,4 +43,30 @@ module.exports = app => {
 
   app.put('/guardian/:id', CGuardian.updateGuardianById);
   
+  /************************ course routes *****************************/
+  const CCourse = require("../controllers/course.controller");
+  app.get('/course', CCourse.getAllCourses);
+
+  // Search courses based on multiple conditions
+  app.get('/course/search', CCourse.getCoursesByConditions);
+
+  app.get('/course/:id', CCourse.getCourseById);
+
+  app.post('/course', CCourse.addNewCourse);
+
+  app.put('/course/:id', CCourse.updateCourseById);
+
+  // Add a student to a course. 
+  app.post('/course/student', CCourse.addStudentToCourse);
+  // Remove a student from a course
+  app.delete('/course/student', CCourse.removeStudentFromCourse);
+  // get all students in a course
+  app.get('/course/student/:courseid',CCourse.getAllStudentFromCourse)
+
+  // Add a teacher to a course
+  app.post('/course/teacher', CCourse.addTeacherToCourse);
+  // Remove a teacher from a course
+  app.delete('/course/teacher', CCourse.removeTeacherFromCourse);
+  // Get all teachers in a course
+  app.get('/course/teacher/:courseID', CCourse.getAllTeachersFromCourse);
 }

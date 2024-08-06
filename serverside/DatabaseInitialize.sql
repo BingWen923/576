@@ -112,6 +112,13 @@ CREATE TABLE `TbCompletedCourses` (
   FOREIGN KEY (StudentId) REFERENCES TbStudent(student_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+DROP VIEW IF EXISTS `view_course`;
+CREATE VIEW view_course AS
+SELECT * 
+FROM TbCourse 
+WHERE status NOT LIKE '%completed%' 
+AND status NOT LIKE '%deleted%';
+
 INSERT INTO `TbUser` (Name, Phone, Email, Address, Memo, isTeacher)
 VALUES ('David Doe', '123-456-7890', 'john.doe@example.com', '123 Main St', 'Experienced music teacher',true);
 INSERT INTO `TbTeacher` (`UserId`, `Status`, `Specialties`)

@@ -1,0 +1,86 @@
+{
+    "info": {
+        "name": "Music School API Requests",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Add a student to a course",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n\"CourseID\": \"course_id_here\",\r\n\"StudentID\": \"student_id_here\"\r\n}"
+                },
+                "url": {
+                    "raw": "localhost:3000/course/student",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "course",
+                        "student"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Remove a student from a course",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n\"CourseID\": \"course_id_here\",\r\n\"StudentID\": \"student_id_here\"\r\n}"
+                },
+                "url": {
+                    "raw": "localhost:3000/course/student",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "course",
+                        "student"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get all students in a course",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "localhost:3000/course/student/:courseid",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "course",
+                        "student",
+                        ":courseid"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
+}
