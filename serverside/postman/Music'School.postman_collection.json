@@ -405,6 +405,90 @@
 			]
 		},
 		{
+			"name": "staff",
+			"item": [
+				{
+					"name": "Add a new staff",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"test staff name 1\",\r\n\"phone\": \"test staff phone 1\",\r\n\"email\": \"test staff email 1\",\r\n\"address\": \"test staff address 1\",\r\n\"memo\": \"test staff memo 1\",\r\n\"status\": \"active\",\r\n\"DateOfHire\": \"2024-7-1\",\r\n\"Title\": \"Reception\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/staff",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"staff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update staff information",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"test staff name 2\",\r\n\"phone\": \"test staff phone 2\",\r\n\"email\": \"test staff email 2\",\r\n\"address\": \"test staff address 2\",\r\n\"memo\": \"test update staff memo from 1 t0 2\",\r\n\"status\": \"active\",\r\n\"DateOfHire\": \"2024-7-1\",\r\n\"Title\": \"Director\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/staff/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"staff",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all staff",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/student",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "course",
 			"item": [
 				{
@@ -562,7 +646,169 @@
 		},
 		{
 			"name": "course-student",
-			"item": []
+			"item": [
+				{
+					"name": "Add a student to a course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"CourseID\": \"1\",\r\n\"StudentID\": \"2\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/course/student",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a student from a course",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"CourseID\": \"1\",\r\n\"StudentID\": \"2\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/course/student",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all students in a course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/course/student/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"student",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "course-teacher",
+			"item": [
+				{
+					"name": "Add a teacher to a course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"CourseID\": \"1\",\r\n\"TeacherID\": \"1\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/course/teacher",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a teacher from a course",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"CourseID\": \"1\",\r\n\"TeacherID\": \"2\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/course/teacher",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all teachers in a course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/course/teacher/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"teacher",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

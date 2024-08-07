@@ -84,5 +84,19 @@ CUser.updateUserByGuardianId_ = (guardianId, updateUser, result) => {
   });
 };
 
+// Update the corresponding user's data based on the staff ID
+CUser.updateUserByStaffId_ = (staffId, updateUser, result) => {
+  updateUser.isStaff = true;
+  db.query("UPDATE TbUser SET ? WHERE user_id = (SELECT UserId FROM TbStaff WHERE TbStaff.staff_id = ?)", [updateUser, staffId], (err, res) => {
+    if (err) {
+      console.log("User update by staffId error:", err);
+      result(err, null);
+      return;
+    }
+    console.log("User updated by staffId:", res);
+    result(null, res);
+  });
+};
+
 module.exports = CUser;
 

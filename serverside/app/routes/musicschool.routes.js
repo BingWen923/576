@@ -43,6 +43,15 @@ module.exports = app => {
 
   app.put('/guardian/:id', CGuardian.updateGuardianById);
   
+  /************************ staff routes *****************************/
+  const CStaff = require("../controllers/staff.controller");
+  // Get all staff
+  app.get('/staff', CStaff.getAllStaff);
+  // Add new staff
+  app.post('/staff', CStaff.addNewStaff);
+  // Update staff by ID
+  app.put('/staff/:staffId', CStaff.updateStaffById);
+
   /************************ course routes *****************************/
   const CCourse = require("../controllers/course.controller");
   app.get('/course', CCourse.getAllCourses);

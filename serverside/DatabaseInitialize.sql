@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS DbMusicSchool;
 USE DbMusicSchool;
 
-DROP TABLE IF EXISTS `TbCompletedCourses`;
 DROP TABLE IF EXISTS `TbCourseStudent`;
 DROP TABLE IF EXISTS `TbCourseTeacher`;
 
@@ -28,7 +27,7 @@ CREATE TABLE `TbUser` (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `TbStaff` (
-  `Staff_id` int NOT NULL AUTO_INCREMENT,
+  `staff_id` int NOT NULL AUTO_INCREMENT,
   `UserId` int NOT NULL,
   `Status` varchar(255) NOT NULL, # active, on leave, resigned, sick
   `DateOfHire` DATE NOT NULL,
@@ -100,6 +99,8 @@ CREATE TABLE `TbCourseStudent` (
   FOREIGN KEY (StudentID) REFERENCES TbStudent(student_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+/*
+DROP TABLE IF EXISTS `TbCompletedCourses`;
 CREATE TABLE `TbCompletedCourses` (
   `completedcourses_id` INT NOT NULL AUTO_INCREMENT,
   `CourseId` INT NOT NULL,
@@ -111,6 +112,7 @@ CREATE TABLE `TbCompletedCourses` (
   FOREIGN KEY (CourseId) REFERENCES TbCourse(course_id),
   FOREIGN KEY (StudentId) REFERENCES TbStudent(student_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+*/
 
 DROP VIEW IF EXISTS `view_course`;
 CREATE VIEW view_course AS
