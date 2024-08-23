@@ -77,5 +77,5 @@ module.exports = app => {
   // Remove a teacher from a course
   app.delete('/course/teacher', CCourse.removeTeacherFromCourse);
   // Get all teachers in a course
-  app.get('/course/teacher/:courseID', CCourse.getAllTeachersFromCourse);
+  app.get('/course/teacher/:courseid', CCourse.getAllTeachersFromCourse);
 }

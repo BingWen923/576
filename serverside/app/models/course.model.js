@@ -3,28 +3,22 @@ const db = require("./db");
 
 // This module is used to handle all valid courses.
 // Valid courses do not include courses that have been deleted or completed.
-/*
-CREATE VIEW view_course AS
-SELECT * 
-FROM TbCourse 
-WHERE status NOT LIKE '%completed%' 
-AND status NOT LIKE '%deleted%';
-*/
+
 const CCourse = function(course) {
   this.course_id = course.course_id;
-  this.Name = course.Name;
-  this.GroupPrivate = course.GroupPrivate;
-  this.CourseType = course.CourseType;
-  this.StartTime = course.StartTime;
-  this.endTime = course.endTime;
-  this.Status = course.Status;
-  this.ClassRoom = course.ClassRoom;
-  this.Memo = course.Memo;
+  this.name = course.name;
+  this.groupprivate = course.groupprivate;
+  this.coursetype = course.coursetype;
+  this.starttime = course.starttime;
+  this.endtime = course.endtime;
+  this.status = course.status;
+  this.classroom = course.classroom;
+  this.memo = course.memo;
 };
 
 // Show all valid courses. 
 CCourse.getAllCourses_ = result => {
-  db.query("SELECT * FROM view_course ", (err, res) => {
+  db.query("SELECT * FROM view_course", (err, res) => {
     if (err) {
       console.log("get all courses error:", err);
       result(null, err);
@@ -36,26 +30,26 @@ CCourse.getAllCourses_ = result => {
 };
 
 // Get courses based on combined conditions. The combined conditions include:
-// courseName, courseType, courses within a certain time period(startTime, endTime), classroom
+// courseName, courseType, courses within a certain time period (startTime, endTime), classroom
 CCourse.getCoursesByConditions_ = (courseName, courseType, startTime, endTime, classroom, result) => {
   // Construct the query with optional conditions
   let query = "SELECT * FROM view_course WHERE 1=1";
   let queryParams = [];
 
   if (courseName) {
-    query += " AND Name LIKE ?";
+    query += " AND name LIKE ?";
     queryParams.push(`%${courseName}%`);
   }
   if (courseType) {
-    query += " AND CourseType = ?";
+    query += " AND coursetype = ?";
     queryParams.push(courseType);
   }
   if (startTime && endTime) {
-    query += " AND StartTime BETWEEN ? AND ?";
+    query += " AND starttime BETWEEN ? AND ?";
     queryParams.push(startTime, endTime);
   }
   if (classroom) {
-    query += " AND ClassRoom = ?";
+    query += " AND classroom = ?";
     queryParams.push(classroom);
   }
 
@@ -86,19 +80,19 @@ CCourse.getCourseById_ = (courseId, result) => {
 // Add new course
 CCourse.addNewCourse_ = (newCourse, result) => {
   const courseData = {
-    Name: newCourse.Name,
-    GroupPrivate: newCourse.GroupPrivate,
-    CourseType: newCourse.CourseType,
-    StartTime: newCourse.StartTime,
-    endTime: newCourse.endTime,
-    Status: newCourse.Status,
-    ClassRoom: newCourse.ClassRoom,
-    Memo: newCourse.Memo
+    name: newCourse.name,
+    groupprivate: newCourse.groupprivate,
+    coursetype: newCourse.coursetype,
+    starttime: newCourse.starttime,
+    endtime: newCourse.endtime,
+    status: newCourse.status,
+    classroom: newCourse.classroom,
+    memo: newCourse.memo
   };
 
   db.query("INSERT INTO TbCourse SET ?", courseData, (err, res) => {
     if (err) {
-      console.log("Add new course Error:", err);
+      console.log("Add new course error:", err);
       result(err, null);
       return;
     }
@@ -112,19 +106,19 @@ CCourse.updateCourseById_ = (courseId, updateCourse, result) => {
   console.log(JSON.stringify(updateCourse), '----------update---------------');
 
   const updateCourseData = {
-    Name: updateCourse.Name,
-    GroupPrivate: updateCourse.GroupPrivate,
-    CourseType: updateCourse.CourseType,
-    StartTime: updateCourse.StartTime,
-    endTime: updateCourse.endTime,
-    Status: updateCourse.Status,
-    ClassRoom: updateCourse.ClassRoom,
-    Memo: updateCourse.Memo
+    name: updateCourse.name,
+    groupprivate: updateCourse.groupprivate,
+    coursetype: updateCourse.coursetype,
+    starttime: updateCourse.starttime,
+    endtime: updateCourse.endtime,
+    status: updateCourse.status,
+    classroom: updateCourse.classroom,
+    memo: updateCourse.memo
   };
 
   db.query("UPDATE TbCourse SET ? WHERE course_id = ?", [updateCourseData, courseId], (err, res) => {
     if (err) {
-      console.log("Update course Error:", err);
+      console.log("Update course error:", err);
       result(err, null);
       return;
     }
@@ -137,8 +131,8 @@ CCourse.updateCourseById_ = (courseId, updateCourse, result) => {
 // Add a teacher to a course
 CCourse.addTeacherToCourse_ = (newCourseTeacher, result) => {
   const courseTeacherData = {
-    CourseID: newCourseTeacher.CourseID,
-    TeacherID: newCourseTeacher.TeacherID
+    courseid: newCourseTeacher.courseid,
+    teacherid: newCourseTeacher.teacherid
   };
 
   db.query("INSERT INTO TbCourseTeacher SET ?", courseTeacherData, (err, res) => {
@@ -154,7 +148,7 @@ CCourse.addTeacherToCourse_ = (newCourseTeacher, result) => {
 
 // Remove a teacher from a course
 CCourse.removeTeacherFromCourse_ = (courseID, teacherID, result) => {
-  db.query("DELETE FROM TbCourseTeacher WHERE CourseID = ? AND TeacherID = ?", [courseID, teacherID], (err, res) => {
+  db.query("DELETE FROM TbCourseTeacher WHERE courseid = ? AND teacherid = ?", [courseID, teacherID], (err, res) => {
     if (err) {
       console.log("Error removing teacher from course:", err);
       result(err, null);
@@ -169,8 +163,8 @@ CCourse.removeTeacherFromCourse_ = (courseID, teacherID, result) => {
 // Add a student to a course
 CCourse.addStudentToCourse_ = (newCourseStudent, result) => {
   const courseStudentData = {
-    CourseID: newCourseStudent.CourseID,
-    StudentID: newCourseStudent.StudentID
+    courseid: newCourseStudent.courseid,
+    studentid: newCourseStudent.studentid
   };
 
   db.query("INSERT INTO TbCourseStudent SET ?", courseStudentData, (err, res) => {
@@ -186,7 +180,7 @@ CCourse.addStudentToCourse_ = (newCourseStudent, result) => {
 
 // Remove a student from a course
 CCourse.removeStudentFromCourse_ = (courseID, studentID, result) => {
-  db.query("DELETE FROM TbCourseStudent WHERE CourseID = ? AND StudentID = ?", [courseID, studentID], (err, res) => {
+  db.query("DELETE FROM TbCourseStudent WHERE courseid = ? AND studentid = ?", [courseID, studentID], (err, res) => {
     if (err) {
       console.log("Error removing student from course:", err);
       result(err, null);
@@ -202,9 +196,9 @@ CCourse.getAllStudentFromCourse_ = (courseID, result) => {
   const query = `
     SELECT s.*, u.*
     FROM TbStudent s
-    JOIN TbCourseStudent cs ON s.student_id = cs.StudentID
-    JOIN TbUser u ON s.UserId = u.user_id
-    WHERE cs.CourseID = ?
+    JOIN TbCourseStudent cs ON s.student_id = cs.studentid
+    JOIN TbUser u ON s.userid = u.user_id
+    WHERE cs.courseid = ?
   `;
   db.query(query, [courseID], (err, res) => {
     if (err) {
@@ -221,8 +215,8 @@ CCourse.getAllStudentFromCourse_ = (courseID, result) => {
 // Add a teacher to a course
 CCourse.addTeacherToCourse_ = (newCourseTeacher, result) => {
   const courseTeacherData = {
-    CourseID: newCourseTeacher.CourseID,
-    TeacherID: newCourseTeacher.TeacherID
+    courseid: newCourseTeacher.courseid,
+    teacherid: newCourseTeacher.teacherid
   };
 
   db.query("INSERT INTO TbCourseTeacher SET ?", courseTeacherData, (err, res) => {
@@ -238,7 +232,7 @@ CCourse.addTeacherToCourse_ = (newCourseTeacher, result) => {
 
 // Remove a teacher from a course
 CCourse.removeTeacherFromCourse_ = (courseID, teacherID, result) => {
-  db.query("DELETE FROM TbCourseTeacher WHERE CourseID = ? AND TeacherID = ?", [courseID, teacherID], (err, res) => {
+  db.query("DELETE FROM TbCourseTeacher WHERE courseid = ? AND teacherid = ?", [courseID, teacherID], (err, res) => {
     if (err) {
       console.log("Error removing teacher from course:", err);
       result(err, null);
@@ -254,9 +248,9 @@ CCourse.getAllTeachersFromCourse_ = (courseID, result) => {
   const query = `
     SELECT t.*, u.*
     FROM TbTeacher t
-    JOIN TbCourseTeacher ct ON t.teacher_id = ct.TeacherID
-    JOIN TbUser u ON t.UserId = u.user_id
-    WHERE ct.CourseID = ?
+    JOIN TbCourseTeacher ct ON t.teacher_id = ct.teacherid
+    JOIN TbUser u ON t.userid = u.user_id
+    WHERE ct.courseid = ?
   `;
   db.query(query, [courseID], (err, res) => {
     if (err) {

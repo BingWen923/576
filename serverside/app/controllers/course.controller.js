@@ -82,9 +82,9 @@ exports.addStudentToCourse = (req, res) => {
 
 // Remove a student from a course
 exports.removeStudentFromCourse = (req, res) => {
-    const { CourseID, StudentID } = req.body;
+    const { courseid, studentid } = req.body;
 
-    CCourse.removeStudentFromCourse_(CourseID, StudentID, (err, data) => {
+    CCourse.removeStudentFromCourse_(courseid, studentid, (err, data) => {
         if (err) {
             res.status(500).json({
                 message: "Error occurred while removing student from course",
@@ -126,9 +126,9 @@ exports.addTeacherToCourse = (req, res) => {
 
 // Remove a teacher from a course
 exports.removeTeacherFromCourse = (req, res) => {
-    const { CourseID, TeacherID } = req.body;
+    const { courseid, teacherid } = req.body;
 
-    CCourse.removeTeacherFromCourse_(CourseID, TeacherID, (err, data) => {
+    CCourse.removeTeacherFromCourse_(courseid, teacherid, (err, data) => {
         if (err) {
             res.status(500).json({
                 message: "Error occurred while removing teacher from course",
@@ -142,7 +142,7 @@ exports.removeTeacherFromCourse = (req, res) => {
 
 // Get all teachers in a course
 exports.getAllTeachersFromCourse = (req, res) => {
-    CCourse.getAllTeachersFromCourse_(req.params.courseID, (err, teachers) => {
+    CCourse.getAllTeachersFromCourse_(req.params.courseid, (err, teachers) => {
         if (err) {
             res.status(500).json({
                 message: "Error occurred while retrieving all teachers in a course",

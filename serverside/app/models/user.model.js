@@ -8,10 +8,10 @@ const CUser = function(user) {
   this.email = user.email;
   this.address = user.address;
   this.memo = user.memo;
-  this.isStudent = user.isStudent;
-  this.isTeacher = user.isTeacher;
-  this.isStaff = user.isStaff;
-  this.isGuardian = user.isGuardian;
+  this.isstudent = user.isstudent;
+  this.isteacher = user.isteacher;
+  this.isstaff = user.isstaff;
+  this.isguardian = user.isguardian;
 };
 
 
@@ -44,7 +44,7 @@ CUser.updateUserById_ = (userId, updateUser, result) => {
 
 // Update the corresponding user's data based on the teacher ID
 CUser.updateUserByTeacherId_ = (teacherId, updateUser, result) => {
-  updateUser.isTeacher = true;
+  updateUser.isteacher = true;
   db.query("UPDATE TbUser SET ? WHERE user_id = (select userid from TbTeacher where TbTeacher.teacher_id = ?)", [updateUser, teacherId], (err, res) => {
     if (err) {
       console.log("User update by teacherid error:", err);
@@ -58,7 +58,7 @@ CUser.updateUserByTeacherId_ = (teacherId, updateUser, result) => {
 
 // Update the corresponding user's data based on the student ID
 CUser.updateUserByStudentId_ = (studentId, updateUser, result) => {
-  updateUser.isStudent = true;
+  updateUser.isstudent = true;
   db.query("UPDATE TbUser SET ? WHERE user_id = (SELECT UserId FROM TbStudent WHERE TbStudent.student_id = ?)", [updateUser, studentId], (err, res) => {
     if (err) {
       console.log("User update by studentId error:", err);
@@ -72,7 +72,7 @@ CUser.updateUserByStudentId_ = (studentId, updateUser, result) => {
 
 // Update the corresponding user's data based on the guardian ID
 CUser.updateUserByGuardianId_ = (guardianId, updateUser, result) => {
-  updateUser.isGuardian = true;
+  updateUser.isguardian = true;
   db.query("UPDATE TbUser SET ? WHERE user_id = (SELECT UserId FROM TbGuardian WHERE TbGuardian.guardian_id = ?)", [updateUser, guardianId], (err, res) => {
     if (err) {
       console.log("User update by guardianId error:", err);
@@ -86,7 +86,7 @@ CUser.updateUserByGuardianId_ = (guardianId, updateUser, result) => {
 
 // Update the corresponding user's data based on the staff ID
 CUser.updateUserByStaffId_ = (staffId, updateUser, result) => {
-  updateUser.isStaff = true;
+  updateUser.isstaff = true;
   db.query("UPDATE TbUser SET ? WHERE user_id = (SELECT UserId FROM TbStaff WHERE TbStaff.staff_id = ?)", [updateUser, staffId], (err, res) => {
     if (err) {
       console.log("User update by staffId error:", err);

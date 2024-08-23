@@ -27,7 +27,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test name 1\",\r\n\"phone\": \"test phone 1\",\r\n\"email\": \"test email 1\",\r\n\"address\": \"test address 1\",\r\n\"memo\": \"test memo 1\",\r\n\"status\": \"active\",\r\n\"specialties\": \"Vocal music, Composition, test\"\r\n}"
+							"raw": "{\r\n\"name\": \"test newteacher 1\",\r\n\"phone\": \"test phone 1\",\r\n\"email\": \"test email 1\",\r\n\"address\": \"test address 1\",\r\n\"memo\": \"test memo 1\",\r\n\"status\": \"active\",\r\n\"specialties\": \"Vocal music, Composition, test\"\r\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/teacher",
@@ -49,7 +49,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test name 2\",\r\n\"phone\": \"test phone 2\",\r\n\"email\": \"test email 2\",\r\n\"address\": \"test address 2\",\r\n\"memo\": \"test memo 2\",\r\n\"status\": \"deleted\",\r\n\"specialties\": \"Vocal music, Composition, test 2\"\r\n}",
+							"raw": "{\r\n\"name\": \"update teacher name 2\",\r\n\"phone\": \"test phone 2\",\r\n\"email\": \"test email 2\",\r\n\"address\": \"test address 2\",\r\n\"memo\": \"test memo 2\",\r\n\"status\": \"deleted\",\r\n\"specialties\": \"Vocal music, Composition, test 2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -57,14 +57,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/teacher/1",
+							"raw": "localhost:3000/teacher/3",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"teacher",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -150,7 +150,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test student name 1\",\r\n\"phone\": \"test student phone 1\",\r\n\"email\": \"test student email 1\",\r\n\"address\": \"test student address 1\",\r\n\"memo\": \"test student memo 1\",\r\n\"status\": \"active\",\r\n\"studyPrograms\": \"Vocal music, Composition, student test\"\r\n}"
+							"raw": "{\r\n\"name\": \"test new student name 2\",\r\n\"phone\": \"test student phone 2\",\r\n\"email\": \"test student email 2\",\r\n\"address\": \"test student address 2\",\r\n\"memo\": \"test student memo 2\",\r\n\"status\": \"active\",\r\n\"studyprograms\": \"Vocal music, Composition, student test\"\r\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/student",
@@ -172,7 +172,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test name 3\",\r\n\"phone\": \"test phone 3\",\r\n\"email\": \"test email 3\",\r\n\"address\": \"test address 3\",\r\n\"memo\": \"test memo 3\",\r\n\"status\": \"deleted\",\r\n\"studyPrograms\": \"Vocal music, Composition, test 3\"\r\n}",
+							"raw": "{\r\n\"name\": \"update student name 3\",\r\n\"phone\": \"test phone 3\",\r\n\"email\": \"test email 3\",\r\n\"address\": \"test address 3\",\r\n\"memo\": \"test memo 3\",\r\n\"status\": \"deleted\",\r\n\"studyprograms\": \"Vocal music, Composition, test 3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -200,7 +200,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test name 3\",\r\n\"phone\": \"test phone 3\",\r\n\"email\": \"test email 3\",\r\n\"address\": \"test address 3\",\r\n\"memo\": \"test memo 3\",\r\n\"status\": \"deleted\",\r\n\"parents1\": \"1\",\r\n\"parents2\": \"2\",\r\n\"studyPrograms\": \"Vocal music, Composition, test 3\"\r\n}",
+							"raw": "{\r\n\"name\": \"test name 3\",\r\n\"phone\": \"test phone 3\",\r\n\"email\": \"test email 3\",\r\n\"address\": \"test address 3\",\r\n\"memo\": \"test memo 3\",\r\n\"status\": \"deleted\",\r\n\"parents1\": \"1\",\r\n\"parents2\": \"2\",\r\n\"studyprograms\": \"Vocal music, Composition, test 3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -302,7 +302,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test mom name 1\",\r\n\"phone\": \"test mom phone 1\",\r\n\"email\": \"test mom email 1\",\r\n\"address\": \"test mom address 1\",\r\n\"memo\": \"test mom memo 1\",\r\n\"status\": \"normal\",\r\n\"GuardianRelation\": \"mom\"\r\n}"
+							"raw": "{\r\n\"name\": \"new guardian mom name 1\",\r\n\"phone\": \"test mom phone 1\",\r\n\"email\": \"test mom email 1\",\r\n\"address\": \"test mom address 1\",\r\n\"memo\": \"test mom memo 1\",\r\n\"status\": \"normal\",\r\n\"guardianrelation\": \"mom\"\r\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/guardian",
@@ -425,7 +425,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test staff name 1\",\r\n\"phone\": \"test staff phone 1\",\r\n\"email\": \"test staff email 1\",\r\n\"address\": \"test staff address 1\",\r\n\"memo\": \"test staff memo 1\",\r\n\"status\": \"active\",\r\n\"DateOfHire\": \"2024-7-1\",\r\n\"Title\": \"Reception\"\r\n}"
+							"raw": "{\r\n\"name\": \"test staff name 1\",\r\n\"phone\": \"test staff phone 1\",\r\n\"email\": \"testemail@test.com\",\r\n\"address\": \"test staff address 1\",\r\n\"memo\": \"test staff memo 1\",\r\n\"status\": \"active\",\r\n\"dateofhire\": \"2024-7-1\",\r\n\"title\": \"Reception\"\r\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/staff",
@@ -447,7 +447,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"test staff name 2\",\r\n\"phone\": \"test staff phone 2\",\r\n\"email\": \"test staff email 2\",\r\n\"address\": \"test staff address 2\",\r\n\"memo\": \"test update staff memo from 1 t0 2\",\r\n\"status\": \"active\",\r\n\"DateOfHire\": \"2024-7-1\",\r\n\"Title\": \"Director\"\r\n}",
+							"raw": "{\r\n\"name\": \"update staff name 1\",\r\n\"phone\": \"test staff phone 1\",\r\n\"email\": \"testemail@test.com\",\r\n\"address\": \"test staff address 1\",\r\n\"memo\": \"test staff memo 1\",\r\n\"status\": \"active\",\r\n\"dateofhire\": \"2024-7-1\",\r\n\"title\": \"Reception\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -509,7 +509,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"Name\": \"Tim‘s guitar course\",\r\n\"GroupPrivate\": \"private\",\r\n\"CourseType\": \"guitar\",\r\n\"StartTime\": \"2024-08-11 09:00:00\",\r\n\"endTime\": \"2024-8-11 11:00:00\",\r\n\"Status\": \"scheduled\",\r\n\"ClassRoom\": \"1.1\",\r\n\"Memo\": \"Tim’s private lessons\"\r\n}"
+							"raw": "{\r\n\"name\": \"Tim‘s guitar course\",\r\n\"groupprivate\": \"private\",\r\n\"coursetype\": \"guitar\",\r\n\"starttime\": \"2024-08-11 09:00:00\",\r\n\"endtime\": \"2024-8-11 11:00:00\",\r\n\"status\": \"scheduled\",\r\n\"classroom\": \"1.1\",\r\n\"memo\": \"Tim’s private lessons\"\r\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/course",
@@ -531,7 +531,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"Name\": \"update test course\",\r\n\"GroupPrivate\": \"private\",\r\n\"CourseType\": \"violin\",\r\n\"StartTime\": \"2024-08-12 09:00:00\",\r\n\"endTime\": \"2024-8-12 11:00:00\",\r\n\"Status\": \"scheduled\",\r\n\"ClassRoom\": \"1.3\",\r\n\"Memo\": \"update test\"\r\n}",
+							"raw": "{\r\n\"name\": \"update course\",\r\n\"groupprivate\": \"private\",\r\n\"coursetype\": \"update test\",\r\n\"starttime\": \"2024-08-11 09:00:00\",\r\n\"endtime\": \"2024-8-11 11:00:00\",\r\n\"status\": \"scheduled\",\r\n\"classroom\": \"1.1\",\r\n\"memo\": \"update lessons\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -660,7 +660,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"CourseID\": \"1\",\r\n\"StudentID\": \"2\"\r\n}"
+							"raw": "{\r\n\"courseid\": \"1\",\r\n\"studentid\": \"1\"\r\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/course/student",
@@ -689,7 +689,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"CourseID\": \"1\",\r\n\"StudentID\": \"2\"\r\n}"
+							"raw": "{\r\n\"courseid\": \"1\",\r\n\"studentid\": \"1\"\r\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/course/student",

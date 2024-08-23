@@ -4,10 +4,10 @@ const CUser = require("./user.model");
 
 const CStaff = function(staff) {
   this.staff_id = staff.staff_id;
-  this.UserId = staff.UserId;
-  this.Status = staff.Status;
-  this.DateOfHire = staff.DateOfHire;
-  this.Title = staff.Title;
+  this.userid = staff.userid;
+  this.status = staff.status;
+  this.dateofhire = staff.dateofhire;
+  this.title = staff.title;
 };
 
 // Get all staff
@@ -31,10 +31,10 @@ CStaff.addNewStaff_ = (newStaff, result) => {
   const newUser = {
     name: newStaff.name,
     phone: newStaff.phone,
-    Email: newStaff.email,
-    Address: newStaff.address,
-    Memo: newStaff.memo,
-    isStaff: true
+    email: newStaff.email,
+    address: newStaff.address,
+    memo: newStaff.memo,
+    isstaff: true
   };
 
   // Insert user record
@@ -49,10 +49,10 @@ CStaff.addNewStaff_ = (newStaff, result) => {
 
     // Prepare the staff info
     const staffData = {
-      UserId: userId_,
+      userid: userId_,
       status: newStaff.status,
-      DateOfHire: newStaff.DateOfHire,
-      Title: newStaff.Title
+      dateofhire: newStaff.dateofhire,
+      title: newStaff.title
     };
 
     // Insert the new staff record
@@ -72,11 +72,11 @@ CStaff.addNewStaff_ = (newStaff, result) => {
 CStaff.updateStaffById_ = (staffId, updateStaff, result) => {
   // User info
   const updateUser = {
-    Name: updateStaff.name,
-    Phone: updateStaff.phone,
-    Email: updateStaff.email,
-    Address: updateStaff.address,
-    Memo: updateStaff.memo
+    name: updateStaff.name,
+    phone: updateStaff.phone,
+    email: updateStaff.email,
+    address: updateStaff.address,
+    memo: updateStaff.memo
   };
 
   // Update the corresponding user info  
@@ -88,9 +88,9 @@ CStaff.updateStaffById_ = (staffId, updateStaff, result) => {
 
     // Staff info
     const updateStaffData = {
-      Status: updateStaff.status,
-      DateOfHire: updateStaff.DateOfHire,
-      Title: updateStaff.Title
+      status: updateStaff.status,
+      dateofhire: updateStaff.dateofhire,
+      title: updateStaff.title
     };
 
     // Update the staff

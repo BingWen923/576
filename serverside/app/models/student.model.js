@@ -7,7 +7,7 @@ const CStudent = function(student) {
   this.student_id = student.student_id;
   this.name = student.name;
   this.status = student.status;
-  this.studyPrograms = student.studyPrograms;
+  this.studyprograms = student.studyprograms;
   this.phone = student.phone;
   this.email = student.email;
   this.address = student.address;
@@ -74,9 +74,7 @@ CStudent.addNewStudent_ = (newStudent, result) => {
     email: newStudent.email,
     address: newStudent.address,
     memo: newStudent.memo,
-    parents1: newStudent.parents1,
-    parents2: newStudent.parents2,
-    isStudent: true
+    isstudent: true
   };
 
   // Insert user record
@@ -93,7 +91,9 @@ CStudent.addNewStudent_ = (newStudent, result) => {
     const studentData = {
       UserId: userId_,
       status: newStudent.status,
-      studyPrograms: newStudent.studyPrograms
+      studyprograms: newStudent.studyprograms,
+      parents1: newStudent.parents1,
+      parents2: newStudent.parents2
     };
 
     // Insert student record
@@ -133,7 +133,7 @@ CStudent.updateStudentById_ = (studentId, updateStudent, result) => {
       parents1: updateStudent.parents1,
       parents2: updateStudent.parents2,
       status: updateStudent.status,
-      studyPrograms: updateStudent.studyPrograms
+      studyprograms: updateStudent.studyprograms
     };
 
     // update student data

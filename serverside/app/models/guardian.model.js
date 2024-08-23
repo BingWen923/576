@@ -4,14 +4,14 @@ const CUser = require("./user.model");
 
 const CGuardian = function(guardian) {
   this.guardian_id = guardian.guardian_id;
-  this.UserId = guardian.UserId;
+  this.userid = guardian.userid;
   this.status = guardian.status;
-  this.GuardianRelation = guardian.GuardianRelation;
+  this.guardianrelation = guardian.guardianrelation;
 };
 
 // get all guardians
 CGuardian.getAllGuardians_ = result => {
-  db.query("SELECT * FROM TbUser, TbGuardian WHERE TbGuardian.UserId = TbUser.user_id", (err, res) => {
+  db.query("SELECT * FROM TbUser, TbGuardian WHERE TbGuardian.userid = TbUser.user_id", (err, res) => {
     if (err) {
       console.log("get all guardians error:", err);
       result(null, err);
@@ -28,7 +28,7 @@ CGuardian.getGuardianByString_ = (searchString, result) => {
   const query = `
     SELECT * 
     FROM TbGuardian 
-    JOIN TbUser ON TbGuardian.UserId = TbUser.user_id 
+    JOIN TbUser ON TbGuardian.userid = TbUser.user_id 
     WHERE TbUser.name LIKE ? 
        OR TbUser.phone LIKE ? 
        OR TbUser.email LIKE ?
@@ -47,7 +47,7 @@ CGuardian.getGuardianByString_ = (searchString, result) => {
 
 // get guardian by id
 CGuardian.getGuardianById_ = (guardianId, result) => {
-  db.query("SELECT * FROM TbGuardian JOIN TbUser ON TbGuardian.UserId = TbUser.user_id WHERE TbGuardian.guardian_id = ?", [guardianId], (err, res) => {
+  db.query("SELECT * FROM TbGuardian JOIN TbUser ON TbGuardian.userid = TbUser.user_id WHERE TbGuardian.guardian_id = ?", [guardianId], (err, res) => {
     if (err) {
       console.log("get guardian by id error:", err);
       result(null, err);
@@ -69,7 +69,7 @@ CGuardian.addNewGuardian_ = (newGuardian, result) => {
     email: newGuardian.email,
     address: newGuardian.address,
     memo: newGuardian.memo,
-    isGuardian: true
+    isguardian: true
   };
 
   // insert user record
@@ -80,13 +80,13 @@ CGuardian.addNewGuardian_ = (newGuardian, result) => {
     }
 
     // get the id of the inserted record
-    const userId_ = userResult.insertId;
+    const userid_ = userResult.insertId;
 
     // prepare the guardian info
     const guardianData = {
-      UserId: userId_,
+      userid: userid_,
       status: newGuardian.status,
-      GuardianRelation: newGuardian.GuardianRelation
+      guardianrelation: newGuardian.guardianrelation
     };
 
     // insert the new guardian record
@@ -125,7 +125,7 @@ CGuardian.updateGuardianById_ = (guardianId, updateGuardian, result) => {
     // guardian info
     const updateGuardianData = {
       status: updateGuardian.status,
-      GuardianRelation: updateGuardian.GuardianRelation
+      guardianrelation: updateGuardian.guardianrelation
     };
 
     // update the guardian
