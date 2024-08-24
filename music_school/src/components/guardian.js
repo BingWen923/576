@@ -1,76 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-//import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-
 import './list_and_form.css';
-import { Container, Row, Col, Button, Table, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
+import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
-// Main Staff Component
-function Staff() {
-    const [staffList, setStaffList] = useState([]);
-    const [editingStaff, setEditingStaff] = useState(null);
+// Main Guardian Component
+function Guardian() {
+    const [guardianList, setGuardianList] = useState([]);
+    const [editingGuardian, setEditingGuardian] = useState(null);
     const [showModal, setShowModal] = useState(false); // State to control the visibility of the Modal
 
-    // Function to fetch and refresh the staff list
-    const fetchStaffList = () => {
-        console.log('Fetching staff list...');
-        fetch("http://localhost:3000/staff")
+    // Function to fetch and refresh the guardian list
+    const fetchGuardianList = () => {
+        console.log('Fetching guardian list...');
+        fetch("http://localhost:3000/guardian")
             .then(response => response.json())
-            .then(data => setStaffList(data))
-            .catch(error => console.error("Error fetching staff data:", error));
+            .then(data => setGuardianList(data))
+            .catch(error => console.error("Error fetching guardian data:", error));
     };
 
     useEffect(() => {
-        // Fetch staff list on the first component load
-        fetchStaffList();
+        // Fetch guardian list on the first component load
+        fetchGuardianList();
     }, []);
 
-    // Function to handle adding or updating staff information
-    const handleAddOrUpdateStaff = (newOrUpdatedStaff) => {
-        if (editingStaff) {
-             // Update existing staff
-            fetch(`http://localhost:3000/staff/${editingStaff.staff_id}`, {
+    // Function to handle adding or updating guardian information
+    const handleAddOrUpdateGuardian = (newOrUpdatedGuardian) => {
+        if (editingGuardian) {
+            // Update existing guardian
+            fetch(`http://localhost:3000/guardian/${editingGuardian.guardian_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(newOrUpdatedStaff)
+                body: JSON.stringify(newOrUpdatedGuardian)
             }).then(response => {
                 if (response.ok) {
-                    // Refresh the staff list
-                    fetchStaffList();
-                    setEditingStaff(null);
+                    // Refresh the guardian list
+                    fetchGuardianList();
+                    setEditingGuardian(null);
                     setShowModal(false); // Close the modal
                 }
             });
         } else {
-            // Add new staff
-            fetch("http://localhost:3000/staff", {
+            // Add new guardian
+            fetch("http://localhost:3000/guardian", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(newOrUpdatedStaff)
+                body: JSON.stringify(newOrUpdatedGuardian)
             }).then(response => {
                 if (response.ok) {
-                    // Refresh the staff list
-                    fetchStaffList();
+                    // Refresh the guardian list
+                    fetchGuardianList();
                     setShowModal(false); // Close the modal
                 }
             });
         }
     };
 
-    // Function to handle editing staff (opens the modal)
-    const handleEditClick = (staff) => {
-        setEditingStaff(staff);
+    // Function to handle editing guardian (opens the modal)
+    const handleEditClick = (guardian) => {
+        setEditingGuardian(guardian);
         setShowModal(true); // Open the modal
     };
 
-    // Function to handle adding new staff (opens the modal)
+    // Function to handle adding new guardian (opens the modal)
     const handleAddClick = () => {
-        setEditingStaff(null); // Clear the form for a new staff entry
+        setEditingGuardian(null); // Clear the form for a new guardian entry
         setShowModal(true); // Open the modal
     };
 
@@ -78,24 +76,24 @@ function Staff() {
         <Container className="mt-5">
             <Row>
                 <Col>
-                    <h3>Staff List</h3>
-                   <StaffList 
-                       staffList={staffList} 
+                    <h3>Guardian List</h3>
+                   <GuardianList 
+                       guardianList={guardianList} 
                        onEditClick={handleEditClick}
-                       addNewStaff = {handleAddClick}
+                       addNewGuardian={handleAddClick}
                     />
                 </Col>
             </Row>
-            {/* Modal for adding or editing staff */}
+            {/* Modal for adding or editing guardian */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{editingStaff ? "Edit Staff" : "Add New Staff"}</Modal.Title>
+                    <Modal.Title>{editingGuardian ? "Edit Guardian" : "Add New Guardian"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <StaffForm
-                        onSubmit={handleAddOrUpdateStaff}
-                        editingStaff={editingStaff}
-                        setEditingStaff={setEditingStaff}
+                    <GuardianForm
+                        onSubmit={handleAddOrUpdateGuardian}
+                        editingGuardian={editingGuardian}
+                        setEditingGuardian={setEditingGuardian}
                         setShowModal={setShowModal}
                     />
                 </Modal.Body>
@@ -104,16 +102,16 @@ function Staff() {
     );
 }
 
-/********************************** Staff List Component *****************************/
-function StaffList({ staffList, onEditClick, addNewStaff }) {
+/********************************** Guardian List Component *****************************/
+function GuardianList({ guardianList, onEditClick, addNewGuardian }) {
     const [searchTerm, setSearchTerm] = useState('');
 
     // search/filter
-    const filteredStaffList = staffList.filter(staff =>
-        staff.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        staff.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        staff.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        staff.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredGuardianList = guardianList.filter(guardian =>
+        guardian.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        guardian.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        guardian.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        guardian.guardianrelation.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Define the columns with sorting and formatting options
@@ -139,15 +137,9 @@ function StaffList({ staffList, onEditClick, addNewStaff }) {
             sort: true
         },
         {
-            dataField: 'title',
-            text: 'Title',
+            dataField: 'guardianrelation',
+            text: 'Guardian Relation',
             sort: true
-        },
-        {
-            dataField: 'dateofhire',
-            text: 'Date Of Hire',
-            sort: true,
-            formatter: (cell) => new Date(cell).toLocaleDateString() // Formatting date
         },
         {
             dataField: 'actions',
@@ -165,15 +157,15 @@ function StaffList({ staffList, onEditClick, addNewStaff }) {
         <>
             <Row className="mb-3 align-items-center justify-content-between">
                 <Col xs="auto">
-                    <Button variant="primary" onClick={addNewStaff}>
-                        + Add New Staff
+                    <Button variant="primary" onClick={addNewGuardian}>
+                        + Add New Guardian
                     </Button>
                 </Col>
                 <Col xs="auto">
                     <FormGroup>
                         <FormControl
-                            placeholder="Search staff..."
-                            aria-label="Search staff"
+                            placeholder="Search guardian..."
+                            aria-label="Search guardian"
                             aria-describedby="basic-addon1"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -182,10 +174,9 @@ function StaffList({ staffList, onEditClick, addNewStaff }) {
                 </Col>
             </Row>
 
-            {/* 表格 */}
             <BootstrapTable
-                keyField="staff_id"
-                data={filteredStaffList}
+                keyField="guardian_id"
+                data={filteredGuardianList}
                 columns={columns}
                 pagination={paginationFactory()}
                 striped
@@ -194,37 +185,27 @@ function StaffList({ staffList, onEditClick, addNewStaff }) {
             />
         </>
     );
-
 }
 
-/********************** add/edit Staff Form Component **********************/
-function StaffForm({ onSubmit, editingStaff, setEditingStaff, setShowModal }) {
+/********************** add/edit Guardian Form Component **********************/
+function GuardianForm({ onSubmit, editingGuardian, setEditingGuardian, setShowModal }) {
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
         email: "",
         address: "",
         memo: "",
-        status: "active",
-        dateofhire:  new Date().toISOString().split('T')[0], // set default to today 
-        title: ""
+        status: "normal",
+        guardianrelation: "",
     });
 
     useEffect(() => {
-        if (editingStaff) {
-            // Format the date to YYYY-MM-DD
-            const localDate = editingStaff.dateofhire
-                ? new Date(editingStaff.dateofhire).toLocaleDateString('en-CA') // 'en-CA' formats to YYYY-MM-DD
-                : "";
-
-            setFormData({
-                ...editingStaff,
-                dateofhire: localDate
-            });
+        if (editingGuardian) {
+            setFormData(editingGuardian);
         } else {
             resetForm();
         }
-    }, [editingStaff]);
+    }, [editingGuardian]);
 
     const handleChange = (e) => {
         setFormData({
@@ -245,15 +226,14 @@ function StaffForm({ onSubmit, editingStaff, setEditingStaff, setShowModal }) {
             email: "",
             address: "",
             memo: "",
-            status: "active",
-            dateofhire: new Date().toISOString().split('T')[0], // set default to today 
-            title: ""
+            status: "normal",
+            guardianrelation: "",
         });
     };
 
     return (
         <Form onSubmit={handleSubmit}>
-                <FormGroup>
+            <FormGroup>
                 <FormLabel>Name</FormLabel>
                 <FormControl
                     type="text"
@@ -310,41 +290,33 @@ function StaffForm({ onSubmit, editingStaff, setEditingStaff, setShowModal }) {
                     onChange={handleChange}
                 >
                     <option value="active">Active</option>
-                    <option value="onleave">On Leave</option>
-                    <option value="resigned">Resigned</option>
-                    <option value="suspend">Suspend</option>
-                    <option value="retired">Retired</option>
-                    <option value="probation">Probation</option>
+                    <option value="inactive">Inactive</option>
                 </FormControl>
             </FormGroup>
             <FormGroup>
-                <FormLabel>Date Of Hire</FormLabel>
+                <FormLabel>Guardian Relation</FormLabel>
                 <FormControl
-                    type="date"
-                    name="dateofhire"
-                    value={formData.dateofhire}
-                    onChange={handleChange}                    
-                />
-            </FormGroup>
-            <FormGroup>
-                <FormLabel>Title</FormLabel>
-                <FormControl
-                    type="text"
-                    name="title"
-                    value={formData.title}
+                    as="select"
+                    name="guardianrelation"
+                    value={formData.guardianrelation}
                     onChange={handleChange}
-                />
+                >
+                    <option value="father">Father</option>
+                    <option value="mother">Mother</option>
+                    <option value="grandparents">Grandparents</option>
+                    <option value="legalguardian">Legal guardian</option>
+                </FormControl>
             </FormGroup>
             <div style={{ textAlign: "center", display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
-                <Button type="submit" variant="primary" style={{ width: "150px" }}>
-                    {editingStaff ? "Update Staff" : "Add Staff"}
+                <Button type="submit" variant="primary" style={{ width: "180px" }}>
+                    {editingGuardian ? "Update Guardian" : "Add Guardian"}
                 </Button>
                 <Button
                     type="button"
                     variant="secondary"
-                    style={{ width: "150px" }}
+                    style={{ width: "180px" }}
                     onClick={() => {
-                        setEditingStaff(null);
+                        setEditingGuardian(null);
                         setShowModal(false);
                     }}
                 >
@@ -355,4 +327,4 @@ function StaffForm({ onSubmit, editingStaff, setEditingStaff, setShowModal }) {
     );
 }
 
-export default Staff;
+export default Guardian;

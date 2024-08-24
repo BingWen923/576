@@ -1,2 +1,42 @@
 
+.container {
+    margin-top: 20px;
+}
 
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+/* Pagination Item Custom Styles */
+.top-pagination .page-item .page-link {
+    color: #007bff;
+    font-weight: bold;
+    border-radius: 8px; /* Set a smaller border-radius for rounded rectangle */
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 2px solid #007bff;
+    width: 160px; /* Set a fixed width */
+    text-align: center; /* Center align the text */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+  
+  .top-pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #007bff;
+  }
+  
+  .top-pagination .page-item:hover .page-link {
+    background-color: #0056b3;
+    color: #ffffff;
+    border-color: #0056b3;
+  }
