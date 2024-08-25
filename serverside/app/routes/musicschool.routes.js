@@ -26,9 +26,10 @@ module.exports = app => {
   app.post('/student', CStudent.addNewStudent);
 
   app.put('/student/:id', CStudent.updateStudentById);
-
+  /* this api is not necessary
   // set parents1 and parents2
   app.put('/student/guardian/:id', CStudent.setStudentGuardianById);
+  */
 
   /************************ guardian routes *****************************/
   const CGuardian = require("../controllers/guardian.controller");

@@ -4,7 +4,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 //import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 import './list_and_form.css';
-import { Container, Row, Col, Button, Table, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
+import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 // Main Staff Component
 function Staff() {

@@ -92,8 +92,8 @@ CStudent.addNewStudent_ = (newStudent, result) => {
       UserId: userId_,
       status: newStudent.status,
       studyprograms: newStudent.studyprograms,
-      parents1: newStudent.parents1,
-      parents2: newStudent.parents2
+      parents1: newStudent.parents1 === "" ? null : newStudent.parents1,
+      parents2: newStudent.parents2 === "" ? null : newStudent.parents2
     };
 
     // Insert student record
@@ -130,8 +130,8 @@ CStudent.updateStudentById_ = (studentId, updateStudent, result) => {
 
     // Prepare student data
     const updateStudentData = {
-      parents1: updateStudent.parents1,
-      parents2: updateStudent.parents2,
+      parents1: updateStudent.parents1 === "" ? null : updateStudent.parents1,
+      parents2: updateStudent.parents2 === "" ? null : updateStudent.parents2,
       status: updateStudent.status,
       studyprograms: updateStudent.studyprograms
     };
@@ -160,8 +160,8 @@ CStudent.updateStudentById_ = (studentId, updateStudent, result) => {
 CStudent.setStudentGuardianById_ = (studentId, updateStudent, result) => {
   // Prepare student data
   const updateStudentData = {
-    parents1: updateStudent.parents1,
-    parents2: updateStudent.parents2,
+    parents1: updateStudent.parents1 === "" ? null : updateStudent.parents1,
+    parents2: updateStudent.parents2 === "" ? null : updateStudent.parents2
   };
 
   // update student data

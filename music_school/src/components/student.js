@@ -1,76 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-
+import Select from 'react-select';
 import './list_and_form.css';
 import './checkbox.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
-// Main Teacher Component
-function Teacher() {
-    const [teacherList, setTeacherList] = useState([]);
-    const [editingTeacher, setEditingTeacher] = useState(null);
+// Main Student Component
+function Student() {
+    const [studentList, setStudentList] = useState([]);
+    const [editingStudent, setEditingStudent] = useState(null);
     const [showModal, setShowModal] = useState(false); // State to control the visibility of the Modal
 
-    // Function to fetch and refresh the teacher list
-    const fetchTeacherList = () => {
-        console.log('Fetching teacher list...');
-        fetch("http://localhost:3000/teacher")
+    // Function to fetch and refresh the student list
+    const fetchStudentList = () => {
+        console.log('Fetching student list...');
+        fetch("http://localhost:3000/student")
             .then(response => response.json())
-            .then(data => setTeacherList(data))
-            .catch(error => console.error("Error fetching teacher data:", error));
+            .then(data => setStudentList(data))
+            .catch(error => console.error("Error fetching student data:", error));
     };
 
     useEffect(() => {
-        // Fetch teacher list on the first component load
-        fetchTeacherList();
+        // Fetch student list on the first component load
+        fetchStudentList();
     }, []);
 
-    // Function to handle adding or updating teacher information
-    const handleAddOrUpdateTeacher = (newOrUpdatedTeacher) => {
-        if (editingTeacher) {
-            // Update existing teacher
-            fetch(`http://localhost:3000/teacher/${editingTeacher.teacher_id}`, {
+    // Function to handle adding or updating student information
+    const handleAddOrUpdateStudent = (newOrUpdatedStudent) => {
+        if (editingStudent) {
+            // Update existing student
+            fetch(`http://localhost:3000/student/${editingStudent.student_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(newOrUpdatedTeacher)
+                body: JSON.stringify(newOrUpdatedStudent)
             }).then(response => {
                 if (response.ok) {
-                    // Refresh the teacher list
-                    fetchTeacherList();
-                    setEditingTeacher(null);
+                    // Refresh the student list
+                    fetchStudentList();
+                    setEditingStudent(null);
                     setShowModal(false); // Close the modal
                 }
             });
         } else {
-            // Add new teacher
-            fetch("http://localhost:3000/teacher", {
+            // Add new student
+            fetch("http://localhost:3000/student", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(newOrUpdatedTeacher)
+                body: JSON.stringify(newOrUpdatedStudent)
             }).then(response => {
                 if (response.ok) {
-                    // Refresh the teacher list
-                    fetchTeacherList();
+                    // Refresh the student list
+                    fetchStudentList();
                     setShowModal(false); // Close the modal
                 }
             });
         }
     };
 
-    // Function to handle editing teacher (opens the modal)
-    const handleEditClick = (teacher) => {
-        setEditingTeacher(teacher);
+    // Function to handle editing student (opens the modal)
+    const handleEditClick = (student) => {
+        setEditingStudent(student);
         setShowModal(true); // Open the modal
     };
 
-    // Function to handle adding new teacher (opens the modal)
+    // Function to handle adding new student (opens the modal)
     const handleAddClick = () => {
-        setEditingTeacher(null); // Clear the form for a new teacher entry
+        setEditingStudent(null); // Clear the form for a new student entry
         setShowModal(true); // Open the modal
     };
 
@@ -78,24 +78,24 @@ function Teacher() {
         <Container className="mt-5">
             <Row>
                 <Col>
-                    <h3>Teacher List</h3>
-                    <TeacherList
-                        teacherList={teacherList}
+                    <h3>Student List</h3>
+                    <StudentList
+                        studentList={studentList}
                         onEditClick={handleEditClick}
-                        addNewTeacher={handleAddClick}
+                        addNewStudent={handleAddClick}
                     />
                 </Col>
             </Row>
-            {/* Modal for adding or editing teacher */}
+            {/* Modal for adding or editing student */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{editingTeacher ? "Edit Teacher" : "Add New Teacher"}</Modal.Title>
+                    <Modal.Title>{editingStudent ? "Edit Student" : "Add New Student"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <TeacherForm
-                        onSubmit={handleAddOrUpdateTeacher}
-                        editingTeacher={editingTeacher}
-                        setEditingTeacher={setEditingTeacher}
+                    <StudentForm
+                        onSubmit={handleAddOrUpdateStudent}
+                        editingStudent={editingStudent}
+                        setEditingStudent={setEditingStudent}
                         setShowModal={setShowModal}
                     />
                 </Modal.Body>
@@ -104,16 +104,16 @@ function Teacher() {
     );
 }
 
-/********************************** Teacher List Component *****************************/
-function TeacherList({ teacherList, onEditClick, addNewTeacher }) {
+/********************************** Student List Component *****************************/
+function StudentList({ studentList, onEditClick, addNewStudent }) {
     const [searchTerm, setSearchTerm] = useState('');
 
     // search/filter
-    const filteredTeacherList = teacherList.filter(teacher =>
-        teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.specialties.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredStudentList = studentList.filter(student =>
+        student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.studyprograms.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Define the columns with sorting and formatting options
@@ -139,8 +139,8 @@ function TeacherList({ teacherList, onEditClick, addNewTeacher }) {
             sort: true
         },
         {
-            dataField: 'specialties',
-            text: 'Specialties',
+            dataField: 'studyprograms',
+            text: 'Study Programs',
             sort: true
         },
         {
@@ -159,15 +159,15 @@ function TeacherList({ teacherList, onEditClick, addNewTeacher }) {
         <>
             <Row className="mb-3 align-items-center justify-content-between">
                 <Col xs="auto">
-                    <Button variant="primary" onClick={addNewTeacher}>
-                        + Add New Teacher
+                    <Button variant="primary" onClick={addNewStudent}>
+                        + Add New Student
                     </Button>
                 </Col>
                 <Col xs="auto">
                     <FormGroup>
                         <FormControl
-                            placeholder="Search teacher..."
-                            aria-label="Search teacher"
+                            placeholder="Search student..."
+                            aria-label="Search student"
                             aria-describedby="basic-addon1"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -177,8 +177,8 @@ function TeacherList({ teacherList, onEditClick, addNewTeacher }) {
             </Row>
 
             <BootstrapTable
-                keyField="teacher_id"
-                data={filteredTeacherList}
+                keyField="student_id"
+                data={filteredStudentList}
                 columns={columns}
                 pagination={paginationFactory()}
                 striped
@@ -189,8 +189,8 @@ function TeacherList({ teacherList, onEditClick, addNewTeacher }) {
     );
 }
 
-/********************** add/edit Teacher Form Component **********************/
-function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal }) {
+/********************** add/edit Student Form Component **********************/
+function StudentForm({ onSubmit, editingStudent, setEditingStudent, setShowModal }) {
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
@@ -198,20 +198,35 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
         address: "",
         memo: "",
         status: "active",
-        specialties: [],
+        parents1: null,
+        parents2: null,
+        studyprograms: [],
     });
 
     useEffect(() => {
-        if (editingTeacher) {
+        if (editingStudent) {
             setFormData({
-                ...editingTeacher,
-                specialties: editingTeacher.specialties ? editingTeacher.specialties.split(",") : []
+                ...editingStudent,
+                studyprograms: editingStudent.studyprograms ? editingStudent.studyprograms.split(",") : []
             });
         } else {
             resetForm();
         }
-    }, [editingTeacher]);
-    
+    }, [editingStudent]);
+
+    // for the guardian select component
+    const [guardianList, setGuardianList] = useState([]);
+    const options = guardianList.map(guardian => ({
+        value: guardian.guardian_id,
+        label: `${guardian.name} / ${guardian.phone}`
+    }));
+    useEffect(() => {
+        // Fetch the list of guardians
+        fetch("http://localhost:3000/guardian")
+            .then(response => response.json())
+            .then(data => setGuardianList(data))
+            .catch(error => console.error("Error fetching guardian data:", error));
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -220,24 +235,24 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
         });
     };
 
-    const handleSpecialtiesChange = (e) => {
+    const handleStudyProgramsChange = (e) => {
         setFormData(prevState => {
             // Initialize an empty array to store the updated values
-            let updatedSpecialties = [];
+            let updatedStudyPrograms = [];
     
-            // Get all checkboxes with the name "specialties"
-            const checkboxes = document.querySelectorAll('input[name="specialties"]');
+            // Get all checkboxes with the name "studyprograms"
+            const checkboxes = document.querySelectorAll('input[name="studyprograms"]');
     
             // Loop through each checkbox and add its value if it is checked
             checkboxes.forEach(checkbox => {
                 if (checkbox.checked) {
-                    updatedSpecialties.push(checkbox.value);
+                    updatedStudyPrograms.push(checkbox.value);
                 }
             });
     
             return {
                 ...prevState,
-                specialties: updatedSpecialties
+                studyprograms: updatedStudyPrograms
             };
         });
     };
@@ -246,7 +261,7 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
         e.preventDefault();
         onSubmit({
             ...formData,
-            specialties: formData.specialties.join(",") // Convert array to comma-separated string
+            studyprograms: formData.studyprograms.join(",") // Convert array to comma-separated string
         });
     };
 
@@ -258,7 +273,9 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
             address: "",
             memo: "",
             status: "active",
-            specialties: [],
+            parents1: null,
+            parents2: null,
+            studyprograms: [],
         });
     };
 
@@ -321,13 +338,85 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
                     onChange={handleChange}
                 >
                     <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                     <option value="onleave">On Leave</option>
-                    <option value="resigned">Resigned</option>
-                    <option value="suspend">Suspend</option>
                 </FormControl>
             </FormGroup>
             <FormGroup>
-                <FormLabel>Specialties</FormLabel>
+                <FormLabel>Parents 1</FormLabel>
+                <Select
+                    className="custom-select"
+                    classNamePrefix="custom"
+                    name="parents1"
+                    value={options.find(option => option.value === formData.parents1) || null}
+                    onChange={(selectedOption) => {
+                        setFormData({
+                            ...formData,
+                            parents1: selectedOption ? selectedOption.value : null
+                        });
+                    }}
+                    options={options}
+                    isClearable
+                    placeholder="Select Parent 1"
+                    noOptionsMessage={() => "No matches found"}
+                />
+            </FormGroup>
+            <FormGroup>
+                <FormLabel>Parents 2</FormLabel>
+                <Select
+                    className="custom-select"
+                    classNamePrefix="custom"
+                    name="parents2"
+                    value={options.find(option => option.value === formData.parents2) || null}
+                    onChange={(selectedOption) => {
+                        setFormData({
+                            ...formData,
+                            parents1: selectedOption ? selectedOption.value : null
+                        });
+                    }}
+                    options={options}
+                    isClearable
+                    placeholder="Select Parent 2"
+                    noOptionsMessage={() => "No matches found"}
+                />
+            </FormGroup>
+{/*}            
+            <FormGroup>
+                <FormLabel>Parents 1</FormLabel>
+                <FormControl
+                    as="select"
+                    name="parents1"
+                    value={formData.parents1 || ""}
+                    onChange={handleChange}
+                >
+                    <option value="">N/A</option>
+                    {guardianList.map(guardian => (
+                        <option key={guardian.guardian_id} value={guardian.guardian_id}>
+                            {guardian.name+" / "+guardian.phone}
+                        </option>
+                    ))}
+                </FormControl>
+            </FormGroup>
+
+            <FormGroup>
+                <FormLabel>Parents 2</FormLabel>
+                <FormControl
+                    as="select"
+                    name="parents2"
+                    value={formData.parents2 || ""}
+                    onChange={handleChange}
+                >
+                    <option value="">N/A</option>
+                    {guardianList.map(guardian => (
+                        <option key={guardian.guardian_id} value={guardian.guardian_id}>
+                            {guardian.name}
+                        </option>
+                    ))}
+                </FormControl>
+            </FormGroup>
+{*/}
+            <FormGroup>
+                <FormLabel>Study Programs</FormLabel>
                 <div className="checkbox-container">
                 <Container>
                     <Row>
@@ -335,30 +424,30 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
                             <Form.Check
                                 type="checkbox"
                                 label="Piano"
-                                name="specialties"
+                                name="studyprograms"
                                 value="piano"
-                                checked={formData.specialties.includes("piano")}
-                                onChange={handleSpecialtiesChange}
+                                checked={formData.studyprograms.includes("piano")}
+                                onChange={handleStudyProgramsChange}
                             />
                         </Col>
                         <Col xs={4}>
                             <Form.Check
                                 type="checkbox"
                                 label="Voice"
-                                name="specialties"
+                                name="studyprograms"
                                 value="voice"
-                                checked={formData.specialties.includes("voice")}
-                                onChange={handleSpecialtiesChange}
+                                checked={formData.studyprograms.includes("voice")}
+                                onChange={handleStudyProgramsChange}
                             />
                         </Col>
                         <Col xs={4}>
                             <Form.Check
                                 type="checkbox"
                                 label="Violin"
-                                name="specialties"
+                                name="studyprograms"
                                 value="violin"
-                                checked={formData.specialties.includes("violin")}
-                                onChange={handleSpecialtiesChange}
+                                checked={formData.studyprograms.includes("violin")}
+                                onChange={handleStudyProgramsChange}
                             />
                         </Col>
                     </Row>
@@ -367,30 +456,30 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
                             <Form.Check
                                 type="checkbox"
                                 label="Drum"
-                                name="specialties"
+                                name="studyprograms"
                                 value="drum"
-                                checked={formData.specialties.includes("drum")}
-                                onChange={handleSpecialtiesChange}
+                                checked={formData.studyprograms.includes("drum")}
+                                onChange={handleStudyProgramsChange}
                             />
                         </Col>
                         <Col xs={4}>
                             <Form.Check
                                 type="checkbox"
                                 label="Guitar"
-                                name="specialties"
+                                name="studyprograms"
                                 value="guitar"
-                                checked={formData.specialties.includes("guitar")}
-                                onChange={handleSpecialtiesChange}
+                                checked={formData.studyprograms.includes("guitar")}
+                                onChange={handleStudyProgramsChange}
                             />
                         </Col>
                         <Col xs={4}>
                             <Form.Check
                                 type="checkbox"
                                 label="Flute/Saxophone/Clarinet"
-                                name="specialties"
+                                name="studyprograms"
                                 value="flute-saxophone-clarinet"
-                                checked={formData.specialties.includes("flute-saxophone-clarinet")}
-                                onChange={handleSpecialtiesChange}
+                                checked={formData.studyprograms.includes("flute-saxophone-clarinet")}
+                                onChange={handleStudyProgramsChange}
                             />
                         </Col>
                     </Row>
@@ -399,14 +488,14 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
             </FormGroup>
             <div style={{ textAlign: "center", display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
                 <Button type="submit" variant="primary" style={{ width: "150px" }}>
-                    {editingTeacher ? "Update Teacher" : "Add Teacher"}
+                    {editingStudent ? "Update Student" : "Add Student"}
                 </Button>
                 <Button
                     type="button"
                     variant="secondary"
                     style={{ width: "150px" }}
                     onClick={() => {
-                        setEditingTeacher(null);
+                        setEditingStudent(null);
                         setShowModal(false);
                     }}
                 >
@@ -417,4 +506,4 @@ function TeacherForm({ onSubmit, editingTeacher, setEditingTeacher, setShowModal
     );
 }
 
-export default Teacher;
+export default Student;
