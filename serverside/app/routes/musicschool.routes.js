@@ -66,17 +66,24 @@ module.exports = app => {
 
   app.put('/course/:id', CCourse.updateCourseById);
 
+  // set students to a course. students could be many.
+  app.put('/course/student/:courseid', CCourse.setStudentsToCourse);
+  /*
   // Add a student to a course. 
   app.post('/course/student', CCourse.addStudentToCourse);
   // Remove a student from a course
   app.delete('/course/student', CCourse.removeStudentFromCourse);
+  */
   // get all students in a course
   app.get('/course/student/:courseid',CCourse.getAllStudentFromCourse)
 
+  // set teachers to a course. teachers could be many.
+  app.put('/course/teacher/:courseid', CCourse.setTeachersToCourse);  /*
   // Add a teacher to a course
   app.post('/course/teacher', CCourse.addTeacherToCourse);
   // Remove a teacher from a course
   app.delete('/course/teacher', CCourse.removeTeacherFromCourse);
+  */
   // Get all teachers in a course
   app.get('/course/teacher/:courseid', CCourse.getAllTeachersFromCourse);
 }

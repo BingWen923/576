@@ -160,6 +160,76 @@ CCourse.removeTeacherFromCourse_ = (courseID, teacherID, result) => {
 };
 
 /************************************* students in a course ***********************************/
+// Set students to a course,students could be many
+CCourse.setStudentsToCourse_ = (courseId, studentsArr, result) => {
+  // Check if studentsArr is an array
+  if (!Array.isArray(studentsArr)) {
+      console.log("setStudentsToCourse_  studentsArr is not an array: ");
+      console.log(studentsArr);
+      result({ message: "Invalid input: studentsArr must be an array" }, null);
+      return;
+  }
+  
+  // Begin transaction
+  db.beginTransaction(err => {
+    if (err) {
+      console.log("Error starting transaction:", err);
+      result(err, null);
+      return;
+    }
+
+    // Delete all existing student records for the course
+    const deleteQuery = "DELETE FROM TbCourseStudent WHERE courseid = ?";
+    db.query(deleteQuery, [courseId], (err, res) => {
+      if (err) {
+        return db.rollback(() => {
+          console.log("Error deleting students from course:", err);
+          result(err, null);
+        });
+      }
+
+      // Loop through studentsArr and insert each student ID
+      const insertPromises = studentsArr.map(studentId => {
+        return new Promise((resolve, reject) => {
+          const insertQuery = `
+            INSERT INTO TbCourseStudent (courseid, studentid)
+            VALUES (?, ?)
+          `;
+          db.query(insertQuery, [courseId, studentId], (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(res);
+          });
+        });
+      });
+
+      // Use Promise.all to ensure all insert operations are completed
+      Promise.all(insertPromises)
+        .then(() => {
+          // Commit the transaction
+          db.commit(err => {
+            if (err) {
+              return db.rollback(() => {
+                console.log("Error committing transaction:", err);
+                result(err, null);
+              });
+            }
+            console.log("Course students updated successfully");
+            result(null, { message: "Course students updated successfully" });
+          });
+        })
+        .catch(err => {
+          // Rollback transaction in case of any error
+          db.rollback(() => {
+            console.log("Error adding students to course:", err);
+            result(err, null);
+          });
+        });
+    });
+  });
+};
+/* no longer needed
 // Add a student to a course
 CCourse.addStudentToCourse_ = (newCourseStudent, result) => {
   const courseStudentData = {
@@ -190,6 +260,7 @@ CCourse.removeStudentFromCourse_ = (courseID, studentID, result) => {
     result(null, res);
   });
 };
+*/
 
 // Get all students in a course
 CCourse.getAllStudentFromCourse_ = (courseID, result) => {
@@ -212,6 +283,7 @@ CCourse.getAllStudentFromCourse_ = (courseID, result) => {
 };
 
 /************************************* teachers in a course ***********************************/
+/*
 // Add a teacher to a course
 CCourse.addTeacherToCourse_ = (newCourseTeacher, result) => {
   const courseTeacherData = {
@@ -240,6 +312,77 @@ CCourse.removeTeacherFromCourse_ = (courseID, teacherID, result) => {
     }
     console.log("Teacher removed from course:", res);
     result(null, res);
+  });
+};
+*/
+
+// Set teachers to a course, teachers could be many
+CCourse.setTeachersToCourse_ = (courseId, teachersArr, result) => {
+  // Check if teachersArr is an array
+  if (!Array.isArray(teachersArr)) {
+    console.log("setTeachersToCourse_  teachersArr is not an array: ");
+    console.log(teachersArr);
+    result({ message: "Invalid input: teachersArr must be an array" }, null);
+    return;
+  }
+
+  // Begin transaction
+  db.beginTransaction(err => {
+    if (err) {
+      console.log("Error starting transaction:", err);
+      result(err, null);
+      return;
+    }
+
+    // Delete all existing teacher records for the course
+    const deleteQuery = "DELETE FROM TbCourseTeacher WHERE courseid = ?";
+    db.query(deleteQuery, [courseId], (err, res) => {
+      if (err) {
+        return db.rollback(() => {
+          console.log("Error deleting teachers from course:", err);
+          result(err, null);
+        });
+      }
+
+      // Loop through teachersArr and insert each teacher ID
+      const insertPromises = teachersArr.map(teacherId => {
+        return new Promise((resolve, reject) => {
+          const insertQuery = `
+            INSERT INTO TbCourseTeacher (courseid, teacherid)
+            VALUES (?, ?)
+          `;
+          db.query(insertQuery, [courseId, teacherId], (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(res);
+          });
+        });
+      });
+
+      // Use Promise.all to ensure all insert operations are completed
+      Promise.all(insertPromises)
+        .then(() => {
+          // Commit the transaction
+          db.commit(err => {
+            if (err) {
+              return db.rollback(() => {
+                console.log("Error committing transaction:", err);
+                result(err, null);
+              });
+            }
+            console.log("Course teachers updated successfully");
+            result(null, { message: "Course teachers updated successfully" });
+          });
+        })
+        .catch(err => {
+          // Rollback transaction in case of any error
+          db.rollback(() => {
+            console.log("Error adding teachers to course:", err);
+            result(err, null);
+          });
+        });
+    });
   });
 };
 

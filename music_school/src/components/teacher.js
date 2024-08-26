@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-
+import { renderSortCaret } from './lib';
 import './list_and_form.css';
 import './checkbox.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
@@ -121,7 +121,8 @@ function TeacherList({ teacherList, onEditClick, addNewTeacher }) {
         {
             dataField: 'name',
             text: 'Name',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'phone',
@@ -136,12 +137,14 @@ function TeacherList({ teacherList, onEditClick, addNewTeacher }) {
         {
             dataField: 'status',
             text: 'Status',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'specialties',
             text: 'Specialties',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'actions',

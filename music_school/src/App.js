@@ -6,7 +6,7 @@ import { Container, Navbar, Nav, Pagination } from 'react-bootstrap';
 import Staff from './components/staff.js';
 import Guardian from './components/guardian.js';
 import Student from './components/student.js'; 
-//import Course from './components/course.js';   
+import Course from './components/course.js';   
 import Teacher from './components/teacher.js'; 
 
 function App() {
@@ -17,8 +17,8 @@ function App() {
         switch (activePage) {
             case 'student':
                 return <Student />;
-     /*       case 'course':
-                return <Course />;*/
+            case 'course':
+                return <Course />;
             case 'teacher':
                 return <Teacher />;
             case 'guardian':

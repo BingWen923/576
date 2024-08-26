@@ -172,7 +172,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\": \"update student name 3\",\r\n\"phone\": \"test phone 3\",\r\n\"email\": \"test email 3\",\r\n\"address\": \"test address 3\",\r\n\"memo\": \"test memo 3\",\r\n\"status\": \"deleted\",\r\n\"studyprograms\": \"Vocal music, Composition, test 3\"\r\n}",
+							"raw": "{\r\n\"name\": \"update name 3\",\r\n\"phone\": \"update phone 3\",\r\n\"email\": \"update@test\",\r\n\"address\": \"test address 3\",\r\n\"memo\": \"test memo 3\",\r\n\"status\": \"active\",\r\n\"parents1\": \"2\",\r\n\"parents2\": \"1\",\r\n\"studyprograms\": \"Vocal music, Composition, test 3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -724,6 +724,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Set students to the course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"students\": [1,2]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/course/student/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"student",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -793,6 +822,35 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "localhost:3000/course/teacher/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"teacher",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set teachers to the course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"teachers\": [1,2]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "localhost:3000/course/teacher/1",
 							"host": [

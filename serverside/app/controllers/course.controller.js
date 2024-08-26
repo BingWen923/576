@@ -66,6 +66,21 @@ exports.updateCourseById = (req, res) => {
     });
 };
 
+// Set students to a course
+exports.setStudentsToCourse = (req, res) => {
+    const { students } = req.body;
+    CCourse.setStudentsToCourse_(req.params.courseid, students, (err, data) => {
+        if (err) {
+            res.status(500).json({
+                message: "Error occurred while set the list of students to course",
+                error: err
+            });
+        } else {
+            res.status(200).json(data);
+        }
+    });
+};
+/* no longer needed
 // Add a student to a course
 exports.addStudentToCourse = (req, res) => {
     CCourse.addStudentToCourse_(req.body, (err, data) => {
@@ -95,9 +110,10 @@ exports.removeStudentFromCourse = (req, res) => {
         }
     });
 };
+*/
 
- // get all students in a course
- exports.getAllStudentFromCourse = (req, res) => {
+// get all students in a course
+exports.getAllStudentFromCourse = (req, res) => {
     CCourse.getAllStudentFromCourse_(req.params.courseid, (err, students) => {
         if (err) {
             res.status(500).json({
@@ -109,7 +125,7 @@ exports.removeStudentFromCourse = (req, res) => {
         }
     });
 };
-
+/*
 // Add a teacher to a course
 exports.addTeacherToCourse = (req, res) => {
     CCourse.addTeacherToCourse_(req.body, (err, data) => {
@@ -132,6 +148,21 @@ exports.removeTeacherFromCourse = (req, res) => {
         if (err) {
             res.status(500).json({
                 message: "Error occurred while removing teacher from course",
+                error: err
+            });
+        } else {
+            res.status(200).json(data);
+        }
+    });
+};
+*/
+// Set teachers to a course
+exports.setTeachersToCourse = (req, res) => {
+    const { teachers } = req.body;
+    CCourse.setTeachersToCourse_(req.params.courseid, teachers, (err, data) => {
+        if (err) {
+            res.status(500).json({
+                message: "Error occurred while set the list of teachers to course",
                 error: err
             });
         } else {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 //import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-
+import { renderSortCaret,formatDate } from './lib';
 import './list_and_form.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
@@ -121,7 +121,8 @@ function StaffList({ staffList, onEditClick, addNewStaff }) {
         {
             dataField: 'name',
             text: 'Name',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'phone',
@@ -136,18 +137,21 @@ function StaffList({ staffList, onEditClick, addNewStaff }) {
         {
             dataField: 'status',
             text: 'Status',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'title',
             text: 'Title',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'dateofhire',
             text: 'Date Of Hire',
             sort: true,
-            formatter: (cell) => new Date(cell).toLocaleDateString() // Formatting date
+            formatter: (cell) => formatDate(cell), // Formatting date
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'actions',
@@ -182,7 +186,6 @@ function StaffList({ staffList, onEditClick, addNewStaff }) {
                 </Col>
             </Row>
 
-            {/* 表格 */}
             <BootstrapTable
                 keyField="staff_id"
                 data={filteredStaffList}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import Select from 'react-select';
+import { renderSortCaret } from './lib';
 import './list_and_form.css';
 import './checkbox.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
@@ -121,7 +122,8 @@ function StudentList({ studentList, onEditClick, addNewStudent }) {
         {
             dataField: 'name',
             text: 'Name',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'phone',
@@ -136,12 +138,14 @@ function StudentList({ studentList, onEditClick, addNewStudent }) {
         {
             dataField: 'status',
             text: 'Status',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'studyprograms',
             text: 'Study Programs',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'actions',
@@ -380,41 +384,6 @@ function StudentForm({ onSubmit, editingStudent, setEditingStudent, setShowModal
                     noOptionsMessage={() => "No matches found"}
                 />
             </FormGroup>
-{/*}            
-            <FormGroup>
-                <FormLabel>Parents 1</FormLabel>
-                <FormControl
-                    as="select"
-                    name="parents1"
-                    value={formData.parents1 || ""}
-                    onChange={handleChange}
-                >
-                    <option value="">N/A</option>
-                    {guardianList.map(guardian => (
-                        <option key={guardian.guardian_id} value={guardian.guardian_id}>
-                            {guardian.name+" / "+guardian.phone}
-                        </option>
-                    ))}
-                </FormControl>
-            </FormGroup>
-
-            <FormGroup>
-                <FormLabel>Parents 2</FormLabel>
-                <FormControl
-                    as="select"
-                    name="parents2"
-                    value={formData.parents2 || ""}
-                    onChange={handleChange}
-                >
-                    <option value="">N/A</option>
-                    {guardianList.map(guardian => (
-                        <option key={guardian.guardian_id} value={guardian.guardian_id}>
-                            {guardian.name}
-                        </option>
-                    ))}
-                </FormControl>
-            </FormGroup>
-{*/}
             <FormGroup>
                 <FormLabel>Study Programs</FormLabel>
                 <div className="checkbox-container">

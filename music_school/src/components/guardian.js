@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { renderSortCaret } from './lib';
 import './list_and_form.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
@@ -119,7 +120,8 @@ function GuardianList({ guardianList, onEditClick, addNewGuardian }) {
         {
             dataField: 'name',
             text: 'Name',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'phone',
@@ -134,12 +136,14 @@ function GuardianList({ guardianList, onEditClick, addNewGuardian }) {
         {
             dataField: 'status',
             text: 'Status',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'guardianrelation',
             text: 'Guardian Relation',
-            sort: true
+            sort: true,
+            sortCaret: renderSortCaret
         },
         {
             dataField: 'actions',
