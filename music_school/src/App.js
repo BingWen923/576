@@ -10,13 +10,11 @@ import Course from './components/course.js';
 import Teacher from './components/teacher.js'; 
 
 function App() {
-    const [activePage, setActivePage] = useState('staff'); // Set initial active page to 'staff'
+    const [activePage, setActivePage] = useState('student'); // Set initial active page to 'student'
 
     // Function to render content based on selected page
     const renderContent = () => {
         switch (activePage) {
-            case 'student':
-                return <Student />;
             case 'course':
                 return <Course />;
             case 'teacher':
@@ -24,8 +22,10 @@ function App() {
             case 'guardian':
                 return <Guardian />;
             case 'staff':
-            default:
                 return <Staff />;
+            default:
+            case 'student':
+                return <Student />;
         }
     };
 
@@ -34,7 +34,7 @@ function App() {
             {/* Banner */}
             <Navbar bg="dark" variant="dark">
                 <Container>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand href="https://www.irvineschoolofmusic.com/">
                         {/* Logo Image */}
                         <img
                             alt="logo"
@@ -46,8 +46,8 @@ function App() {
                         Irvine School of Music
                     </Navbar.Brand>
                     <Nav className="ml-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#about">About</Nav.Link>
+                        <Nav.Link href="https://www.irvineschoolofmusic.com/">Home</Nav.Link>
+                        <Nav.Link href="https://www.irvineschoolofmusic.com/about-us/">About</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>

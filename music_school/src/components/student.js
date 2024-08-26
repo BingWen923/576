@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import Select from 'react-select';
-import { renderSortCaret } from './lib';
+import { renderSortCaret,geneStudentId } from './lib';
 import './list_and_form.css';
 import './checkbox.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
@@ -111,6 +111,7 @@ function StudentList({ studentList, onEditClick, addNewStudent }) {
 
     // search/filter
     const filteredStudentList = studentList.filter(student =>
+        geneStudentId(student.student_id).includes(searchTerm.toLowerCase()) ||
         student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -119,6 +120,13 @@ function StudentList({ studentList, onEditClick, addNewStudent }) {
 
     // Define the columns with sorting and formatting options
     const columns = [
+        {
+            dataField: 'student_id',
+            text: 'Student ID',
+            sort: true,
+            sortCaret: renderSortCaret,
+            formatter: (cell) => geneStudentId(cell)
+        },
         {
             dataField: 'name',
             text: 'Name',

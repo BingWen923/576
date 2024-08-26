@@ -5,7 +5,7 @@ import Select from 'react-select';
 
 import './list_and_form.css';
 import './checkbox.css';
-import { renderSortCaret,formatDateTime } from './lib';
+import { renderSortCaret,formatDateTime,geneStudentId } from './lib';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 // Main Course Component
@@ -312,7 +312,7 @@ function CourseForm({ onSubmit, editingCourse, setEditingCourse, setShowModal })
             .then(data => {
                 const options = data.map(student => ({
                     value: student.student_id,
-                    label: student.name
+                    label: geneStudentId(student.student_id) + "|" + student.name
                 }));
                 setStudentOptions(options);
             })

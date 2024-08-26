@@ -25,3 +25,8 @@ export const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-CA');
 };
+
+// generate the student id in 6 digits
+export const geneStudentId = (student_id) => {
+    return student_id.toString().padStart(6, '0');
+};
