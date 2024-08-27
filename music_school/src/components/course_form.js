@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 import './list_and_form.css';
 import './checkbox.css';
-import { geneStudentId } from './lib';
+import { geneStudentId, formatDateTime } from './lib';
 import { Button, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 /********************** add/edit Course Form Component **********************/
@@ -40,8 +40,8 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
                     // Update the form data with the fetched teachers and students
                     setFormData({
                         ...currentCourse,
-                        starttime: currentCourse.starttime ? new Date(currentCourse.starttime).toISOString().slice(0, 16) : "",
-                        endtime: currentCourse.endtime ? new Date(currentCourse.endtime).toISOString().slice(0, 16) : "",
+                        starttime: currentCourse.starttime ? formatDateTime(currentCourse.starttime) : "",
+                        endtime: currentCourse.endtime ? formatDateTime(currentCourse.endtime) : "",
                         students: students,
                         teachers: teachers
                     });

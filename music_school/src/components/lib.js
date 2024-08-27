@@ -13,17 +13,15 @@ export const renderSortCaret = (order) => {
 // Global function to format date and time, YYYY-MM-DD HH:MM
 export const formatDateTime = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-CA') + ' ' + date.toLocaleTimeString('en-CA', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    });
+    const [fullDate, time] = date.toISOString().split('T');
+    const formattedTime = time.slice(0, 5); // Extracts HH:MM (ignores seconds and milliseconds)
+    return `${fullDate} ${formattedTime}`;
 };
 
 // Global function to format date but no time, YYYY-MM-DD
 export const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-CA');
+    return date.toISOString().split('T')[0]; // Extracts only the date (YYYY-MM-DD)
 };
 
 // generate the student id in 6 digits

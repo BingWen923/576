@@ -87,9 +87,11 @@ CCourse.addRecurringCourses_ = (newCourse, result) => {
     return result(new Error("Invalid recurrence period"));
   }
 
-  if (!Number.isInteger(newCourse.rec_count) || newCourse.rec_count < 1 || newCourse.rec_count > 100) {
-    return result(new Error("rec_count must be an integer between 1 and 100"));
+  let recCount = parseInt(newCourse.rec_count, 10); // try to convert it to integer
+  if (isNaN(recCount) || recCount < 1 || recCount > 100) {
+      return result(new Error("rec_count must be an integer between 1 and 100"));
   }
+  newCourse.rec_count = recCount;
 
   const getNextCourse = (curCourse) => {
     const date1 = new Date(curCourse.starttime);
@@ -340,38 +342,6 @@ CCourse.setStudentsToCourse_ = (courseId, studentsArr, result) => {
     });
   });
 };
-/* no longer needed
-// Add a student to a course
-CCourse.addStudentToCourse_ = (newCourseStudent, result) => {
-  const courseStudentData = {
-    courseid: newCourseStudent.courseid,
-    studentid: newCourseStudent.studentid
-  };
-
-  db.query("INSERT INTO TbCourseStudent SET ?", courseStudentData, (err, res) => {
-    if (err) {
-      console.log("Error adding student to course:", err);
-      result(err, null);
-      return;
-    }
-    console.log("Student added to course:", res);
-    result(null, res);
-  });
-};
-
-// Remove a student from a course
-CCourse.removeStudentFromCourse_ = (courseID, studentID, result) => {
-  db.query("DELETE FROM TbCourseStudent WHERE courseid = ? AND studentid = ?", [courseID, studentID], (err, res) => {
-    if (err) {
-      console.log("Error removing student from course:", err);
-      result(err, null);
-      return;
-    }
-    console.log("Student removed from course:", res);
-    result(null, res);
-  });
-};
-*/
 
 // Get all students in a course
 CCourse.getAllStudentFromCourse_ = (courseID, result) => {
@@ -394,39 +364,6 @@ CCourse.getAllStudentFromCourse_ = (courseID, result) => {
 };
 
 /************************************* teachers in a course ***********************************/
-/*
-// Add a teacher to a course
-CCourse.addTeacherToCourse_ = (newCourseTeacher, result) => {
-  const courseTeacherData = {
-    courseid: newCourseTeacher.courseid,
-    teacherid: newCourseTeacher.teacherid
-  };
-
-  db.query("INSERT INTO TbCourseTeacher SET ?", courseTeacherData, (err, res) => {
-    if (err) {
-      console.log("Error adding teacher to course:", err);
-      result(err, null);
-      return;
-    }
-    console.log("Teacher added to course:", res);
-    result(null, res);
-  });
-};
-
-// Remove a teacher from a course
-CCourse.removeTeacherFromCourse_ = (courseID, teacherID, result) => {
-  db.query("DELETE FROM TbCourseTeacher WHERE courseid = ? AND teacherid = ?", [courseID, teacherID], (err, res) => {
-    if (err) {
-      console.log("Error removing teacher from course:", err);
-      result(err, null);
-      return;
-    }
-    console.log("Teacher removed from course:", res);
-    result(null, res);
-  });
-};
-*/
-
 // Set teachers to a course, teachers could be many
 CCourse.setTeachersToCourse_ = (courseId, teachersArr, result) => {
   // Check if teachersArr is an array

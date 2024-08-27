@@ -63,13 +63,14 @@ function Course() {
                 body: JSON.stringify(newOrUpdatedCourse)
             }).then(response => {
                 if (response.ok) {
-                    // Update students and teachers
-                    const courseId = currentCourse.course_id;
-                    updateStudentsAndTeachers(courseId, newOrUpdatedCourse.students, newOrUpdatedCourse.teachers);
+                    fetchCourseList(); // Refresh the course list
                 }
             });
-        } else if (currentCourse.mode === "add1") {
-            // Add new course
+        } else if (currentCourse.mode === "add1" || currentCourse.mode === "addrec") {
+            // Add new course or add recurring courses
+            console.log("1111111111111111");
+            console.log(newOrUpdatedCourse);
+            console.log("22222222222222222222");
             fetch("http://localhost:3000/course", {
                 method: "POST",
                 headers: {
@@ -78,58 +79,16 @@ function Course() {
                 body: JSON.stringify(newOrUpdatedCourse)
             }).then(response => response.json())
               .then(data => {
-                  if (data && data.insertId) {
-                      // Newly added course ID
-                      const courseId = data.insertId;
-                      console.log("***********new added course id: ");
-                      console.log(courseId);
-                      updateStudentsAndTeachers(courseId, newOrUpdatedCourse.students, newOrUpdatedCourse.teachers);
+                  if (data) {
+                      fetchCourseList(); // Refresh the course list
                   }
               });
-        } else if (currentCourse.mode === "addrec") {
-            // Placeholder for addrec logic
-            console.log("addrec mode - logic not yet implemented");
-            // You can add your logic here later for handling recurring courses.
         }
     
         setCurrentCourse(null);
         setShowModal(false); // Close the modal
     };
     
-    // Function to update students and teachers after adding/updating a course
-    const updateStudentsAndTeachers = (courseId, students, teachers) => {
-        console.log("Updating students and teachers for course ID:", courseId);
-        console.log("Students data to be sent:", students);
-        console.log("Teachers data to be sent:", teachers);
-        // Update students
-        fetch(`http://localhost:3000/course/student/${courseId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ students })
-        }).then(response => {
-            if (response.ok) {
-                console.log('Students updated successfully');
-                fetchCourseList(); // Refresh the course list
-            }
-        });
-    
-        // Update teachers
-        fetch(`http://localhost:3000/course/teacher/${courseId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ teachers })
-        }).then(response => {
-            if (response.ok) {
-                console.log('Teachers updated successfully');
-                fetchCourseList(); // Refresh the course list
-            }
-        });
-    };
-
     // Function to handle editing course (opens the modal)
     const handleEditClick = (course) => {
         setCurrentCourse(course);
