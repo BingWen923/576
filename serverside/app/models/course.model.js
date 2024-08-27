@@ -77,14 +77,158 @@ CCourse.getCourseById_ = (courseId, result) => {
   });
 };
 
+/**************************** repeatly add recurring courses **************************/
+CCourse.addRecurringCourses_ = (newCourse, result) => {
+  // Validate inputs
+  if (!newCourse || typeof newCourse !== 'object') {
+    return result(new Error("Invalid course data"));
+  }
+  if (!newCourse.rec_period) {
+    return result(new Error("Invalid recurrence period"));
+  }
+
+  if (!Number.isInteger(newCourse.rec_count) || newCourse.rec_count < 1 || newCourse.rec_count > 100) {
+    return result(new Error("rec_count must be an integer between 1 and 100"));
+  }
+
+  const getNextCourse = (curCourse) => {
+    const date1 = new Date(curCourse.starttime);
+    const date2 = new Date(curCourse.endtime);
+
+    switch (curCourse.rec_period) {
+      case "1": // Daily
+        date1.setDate(date1.getDate() + 1);
+        date2.setDate(date2.getDate() + 1);
+        break;
+      case "2": // Every 2 Days
+        date1.setDate(date1.getDate() + 2);
+        date2.setDate(date2.getDate() + 2);
+        break;
+      case "3": // Every 3 Days
+        date1.setDate(date1.getDate() + 3);
+        date2.setDate(date2.getDate() + 3);
+        break;
+      case "7": // Weekly
+        date1.setDate(date1.getDate() + 7);
+        date2.setDate(date2.getDate() + 7);
+        break;
+      case "14": // Every 2 Weeks
+        date1.setDate(date1.getDate() + 14);
+        date2.setDate(date2.getDate() + 14);
+        break;
+      case "m": // Monthly
+        date1.setMonth(date1.getMonth() + 1);
+        date2.setMonth(date2.getMonth() + 1);
+        break;
+      default:
+        return result(new Error("Invalid recurrence period"));
+    }
+
+    curCourse.starttime = date1.toISOString();
+    curCourse.endtime = date2.toISOString();
+    return { ...curCourse }; // Return a new object to avoid modifying the original
+  };
+
+  let currentCourse = { ...newCourse }; // Clone the course to avoid side effects
+
+  // Use a Promise chain to sequentially add courses
+  let firstCourseResult = null;
+  const addCoursesPromise = Array.from({ length: currentCourse.rec_count }).reduce((promiseChain, _, index) => {
+    return promiseChain
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          CCourse.addSingleCourse_(currentCourse, (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            if (!firstCourseResult) {
+              firstCourseResult = res; // Capture the first course result to return it later
+            }
+            //console.log(`Course ${index + 1} added successfully`);
+            currentCourse = getNextCourse(currentCourse); // Get the next course in the recurrence series
+            resolve();
+          });
+        });
+      });
+  }, Promise.resolve());
+
+  // After all courses are added, return the result of the first course
+  addCoursesPromise
+    .then(() => {
+      return result(null, firstCourseResult);
+    })
+    .catch((err) => {
+      return result(err);
+    });
+};
+
+/**************************** add a single course, and add teachers & students if have data **************************/
+CCourse.addSingleCourse_ = (newCourse, result) => {
+  // First, add the new course
+  CCourse.addNewCourse_(newCourse, (err, res) => {
+    if (err) {
+      return result(err, null);
+    }
+
+    // Get the inserted course ID
+    const courseId = res.insertId;
+
+    // Create an array to hold all promises
+    const tasks = [];
+
+    // If teachers exist and are an array, add setTeachersToCourse_ to the tasks
+    if (Array.isArray(newCourse.teachers) && newCourse.teachers.length > 0) {
+      tasks.push(
+        new Promise((resolve, reject) => {
+          CCourse.setTeachersToCourse_(courseId, newCourse.teachers, (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(res);
+          });
+        })
+      );
+    }
+
+    // If students exist and are an array, add setStudentsToCourse_ to the tasks
+    if (Array.isArray(newCourse.students) && newCourse.students.length > 0) {
+      tasks.push(
+        new Promise((resolve, reject) => {
+          CCourse.setStudentsToCourse_(courseId, newCourse.students, (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(res);
+          });
+        })
+      );
+    }
+
+    // Run all tasks in parallel and wait for them to complete
+    Promise.all(tasks)
+      .then(() => {
+        result(null, res); // Return the course insert result
+      })
+      .catch((err) => {
+        console.log("Error adding course, teachers, or students:", err);
+        result(err, null); // Return the error if any operation fails
+      });
+  });
+};
+
 // Add new course
 CCourse.addNewCourse_ = (newCourse, result) => {
+  const formatDateTimeForMySQL = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+  };
+  
   const courseData = {
     name: newCourse.name,
     groupprivate: newCourse.groupprivate,
     coursetype: newCourse.coursetype,
-    starttime: newCourse.starttime,
-    endtime: newCourse.endtime,
+    starttime: formatDateTimeForMySQL(newCourse.starttime),
+    endtime: formatDateTimeForMySQL(newCourse.endtime),
     status: newCourse.status,
     classroom: newCourse.classroom,
     memo: newCourse.memo
@@ -96,7 +240,6 @@ CCourse.addNewCourse_ = (newCourse, result) => {
       result(err, null);
       return;
     }
-    console.log("New course added:", res);
     result(null, res);
   });
 };
@@ -127,37 +270,6 @@ CCourse.updateCourseById_ = (courseId, updateCourse, result) => {
   });
 };
 
-/************************************* teachers in a course ***********************************/
-// Add a teacher to a course
-CCourse.addTeacherToCourse_ = (newCourseTeacher, result) => {
-  const courseTeacherData = {
-    courseid: newCourseTeacher.courseid,
-    teacherid: newCourseTeacher.teacherid
-  };
-
-  db.query("INSERT INTO TbCourseTeacher SET ?", courseTeacherData, (err, res) => {
-    if (err) {
-      console.log("Error adding teacher to course:", err);
-      result(err, null);
-      return;
-    }
-    console.log("Teacher added to course:", res);
-    result(null, res);
-  });
-};
-
-// Remove a teacher from a course
-CCourse.removeTeacherFromCourse_ = (courseID, teacherID, result) => {
-  db.query("DELETE FROM TbCourseTeacher WHERE courseid = ? AND teacherid = ?", [courseID, teacherID], (err, res) => {
-    if (err) {
-      console.log("Error removing teacher from course:", err);
-      result(err, null);
-      return;
-    }
-    console.log("Teacher removed from course:", res);
-    result(null, res);
-  });
-};
 
 /************************************* students in a course ***********************************/
 // Set students to a course,students could be many
@@ -215,7 +327,6 @@ CCourse.setStudentsToCourse_ = (courseId, studentsArr, result) => {
                 result(err, null);
               });
             }
-            console.log("Course students updated successfully");
             result(null, { message: "Course students updated successfully" });
           });
         })
@@ -371,7 +482,6 @@ CCourse.setTeachersToCourse_ = (courseId, teachersArr, result) => {
                 result(err, null);
               });
             }
-            console.log("Course teachers updated successfully");
             result(null, { message: "Course teachers updated successfully" });
           });
         })

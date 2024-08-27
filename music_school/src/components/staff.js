@@ -209,7 +209,7 @@ function StaffForm({ onSubmit, editingStaff, setEditingStaff, setShowModal }) {
         address: "",
         memo: "",
         status: "active",
-        dateofhire:  new Date().toISOString().split('T')[0], // set default to today 
+        dateofhire:  new Date().toLocaleDateString('en-CA'), // set default to today 
         title: ""
     });
 
@@ -217,7 +217,7 @@ function StaffForm({ onSubmit, editingStaff, setEditingStaff, setShowModal }) {
         if (editingStaff) {
             // Format the date to YYYY-MM-DD
             const localDate = editingStaff.dateofhire
-                ? new Date(editingStaff.dateofhire).toLocaleDateString('en-CA') // 'en-CA' formats to YYYY-MM-DD
+                ? formatDate(editingStaff.dateofhire)
                 : "";
 
             setFormData({
@@ -249,7 +249,7 @@ function StaffForm({ onSubmit, editingStaff, setEditingStaff, setShowModal }) {
             address: "",
             memo: "",
             status: "active",
-            dateofhire: new Date().toISOString().split('T')[0], // set default to today 
+            dateofhire: new Date().toLocaleDateString('en-CA'), // set default to today 
             title: ""
         });
     };

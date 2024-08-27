@@ -40,17 +40,33 @@ exports.getCoursesByConditions = (req, res) => {
     });
 };
 
+////////////////////////// add course or courses with teachers and students ////////////////////////
 exports.addNewCourse = (req, res) => {
-    CCourse.addNewCourse_(req.body, (err, course) => {
-        if (err) {
-            res.status(500).json({
-                message: "Error occurred while adding a new course",
-                error: err
-            });
-        } else {
-            res.status(200).json(course);
-        }
-    });
+    const newCourse = req.body;
+    
+    if (newCourse.rec_period && newCourse.rec_period !== "0") {
+        CCourse.addRecurringCourses_(newCourse, (err, result1) => {
+            if (err) {
+                console.error("Error in addRecurringCourses_:", err.message || err);
+                return res.status(500).json({
+                    message: "Error occurred while adding new courses",
+                    error: err.message || "Unknown error"
+                });
+            }
+            return res.status(200).json(result1);
+        });
+    } else {
+        CCourse.addSingleCourse_(newCourse, (err, result) => {
+            if (err) {
+                console.error("Error in addSingleCourse_:", err.message || err);
+                return res.status(500).json({
+                    message: "Error occurred while adding a new course",
+                    error: err.message || "Unknown error"
+                });
+            }
+            return res.status(200).json(result);
+        });
+    }
 };
 
 exports.updateCourseById = (req, res) => {
