@@ -104,6 +104,43 @@ FROM `tbcourse`
 WHERE `status` NOT LIKE '%completed%'
 AND `status` NOT LIKE '%deleted%';
 
+/***************************** create stored procedure ***************************/
+DROP PROCEDURE IF EXISTS `deleteCourse`;
+DELIMITER $$
+CREATE PROCEDURE deleteCourse(IN CID INT)
+BEGIN
+    DECLARE exitHandler INT DEFAULT 0;
+    
+    -- Handler to catch any SQL exception and roll back the transaction
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        SET exitHandler = 1;
+        ROLLBACK;
+    END;
+
+    -- Start the transaction
+    START TRANSACTION;
+
+    -- Delete related records from tbcoursestudent and tbcourseteacher
+    DELETE FROM tbcoursestudent WHERE courseid = CID;
+    DELETE FROM tbcourseteacher WHERE courseid = CID;
+
+    -- Delete the course record from tbcourse table
+    DELETE FROM tbcourse WHERE course_id = CID;
+
+    -- Check if an error occurred during the transaction
+    IF exitHandler = 0 THEN
+        COMMIT;
+        -- Return a success message if everything went fine
+        SELECT CONCAT('deleteCourse successfully for courseId: ', CID) AS SuccessMessage;
+    ELSE
+        -- Return an error message if any part of the transaction failed
+        SELECT 'deleteCourse error occurred. The transaction has been rolled back.' AS ErrorMessage;
+    END IF;
+END $$
+DELIMITER ;
+/***************************** create stored procedure ***************************/
+
 INSERT INTO `tbuser` (`name`, `phone`, `email`, `address`, `memo`, `isteacher`)
 VALUES ('David Doe', '123-456-7890', 'john.doe@example.com', '123 Main St', 'Experienced music teacher', true);
 INSERT INTO `tbteacher` (`userid`, `status`, `specialties`)

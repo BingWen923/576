@@ -82,6 +82,20 @@ exports.updateCourseById = (req, res) => {
     });
 };
 
+exports.deleteCourseById = (req, res) => {
+    CCourse.deleteCourseById_(req.params.id, (err, course) => {
+        if (err) {
+            res.status(500).json({
+                message: "Error occurred while deleting the course",
+                error: err
+            });
+        } else {
+            res.status(200).json(course);
+        }
+    });
+};
+
+/*
 // Set students to a course
 exports.setStudentsToCourse = (req, res) => {
     const { students } = req.body;
@@ -96,6 +110,8 @@ exports.setStudentsToCourse = (req, res) => {
         }
     });
 };
+*/
+
 /* no longer needed
 // Add a student to a course
 exports.addStudentToCourse = (req, res) => {
@@ -172,6 +188,8 @@ exports.removeTeacherFromCourse = (req, res) => {
     });
 };
 */
+
+/*
 // Set teachers to a course
 exports.setTeachersToCourse = (req, res) => {
     const { teachers } = req.body;
@@ -186,6 +204,7 @@ exports.setTeachersToCourse = (req, res) => {
         }
     });
 };
+*/
 
 // Get all teachers in a course
 exports.getAllTeachersFromCourse = (req, res) => {

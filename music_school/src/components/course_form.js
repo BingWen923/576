@@ -299,7 +299,7 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
                 />
             </FormGroup>
             {/******************* FormGroup for teachers *****************************/}
-            <FormGroup>
+            <FormGroup className='mt-2'>
                 <FormLabel>Teachers</FormLabel>
                 <Select
                     isMulti
@@ -312,8 +312,9 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
                     onChange={handleTeachersChange}
                 />
             </FormGroup>
+
             {/******************* FormGroup for students *******************/}
-            <FormGroup>
+            <FormGroup className='mt-2'>
                 <FormLabel>Students</FormLabel>
                 <Select
                     isMulti

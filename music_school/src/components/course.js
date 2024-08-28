@@ -95,6 +95,27 @@ function Course() {
         setShowModal(true); // Open the modal
     };
 
+    const handleDeleteClick = (course) => {
+        const confirmation = window.confirm(`Are you sure you want to delete the course "${course.name}"? This action cannot be undone.`);
+    
+        if (confirmation) {
+            fetch(`http://localhost:3000/course/${course.course_id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                if (response.ok) {
+                    fetchCourseList(); // Refresh the course list
+                } else {
+                    console.error("Failed to delete the course.");
+                }
+            }).catch(error => {
+                console.error("Error occurred during deletion:", error);
+            });
+        }
+    };
+
     // Function to handle adding 1 new course (opens the modal)
     const handleAdd1Click = () => {
         setCurrentCourse("add1"); 
@@ -114,6 +135,7 @@ function Course() {
                     <CourseList
                         courseList={courseList}
                         onEditClick={handleEditClick}
+                        onDeleteClick={handleDeleteClick}
                         add1Course={handleAdd1Click}
                         addRecurringCourses={handleAddRecClick}
                     />
@@ -142,7 +164,7 @@ function Course() {
 }
 
 /********************************** Course List Component *****************************/
-function CourseList({ courseList, onEditClick, add1Course, addRecurringCourses }) {
+function CourseList({ courseList, onEditClick, onDeleteClick, add1Course, addRecurringCourses }) {
     const [searchTerm, setSearchTerm] = useState('');
 
     // search/filter
@@ -212,9 +234,14 @@ function CourseList({ courseList, onEditClick, add1Course, addRecurringCourses }
             isDummyField: true,
             headerClasses: 'non-sortable-header',
             formatter: (cell, row) => (
-                <Button variant="primary" onClick={() => onEditClick(row)}>
-                    Edit
-                </Button>
+                <div>
+                    <Button variant="primary" onClick={() => onEditClick(row)} style={{ marginRight: '5px' }}>
+                        Edit
+                    </Button>
+                    <Button variant="danger" onClick={() => onDeleteClick(row)}>
+                        Delete
+                    </Button>
+                </div>
             )
         }
     ];

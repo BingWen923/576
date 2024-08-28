@@ -525,6 +525,72 @@
 					"response": []
 				},
 				{
+					"name": "Add a new course with teachers and students",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Tim‘s guitar course\",\r\n\"groupprivate\": \"private\",\r\n\"coursetype\": \"guitar\",\r\n\"starttime\": \"2024-08-11 09:00:00\",\r\n\"endtime\": \"2024-8-11 11:00:00\",\r\n\"status\": \"scheduled\",\r\n\"classroom\": \"1.1\",\r\n\"memo\": \"Tim’s private lessons\",\r\n\"teachers\": [1, 2],\r\n\"students\": [1, 2]\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/course",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add recurring courses",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Tim‘s guitar course\",\r\n\"groupprivate\": \"private\",\r\n\"coursetype\": \"guitar\",\r\n\"starttime\": \"2024-08-11 09:00:00\",\r\n\"endtime\": \"2024-8-11 11:00:00\",\r\n\"status\": \"scheduled\",\r\n\"classroom\": \"1.1\",\r\n\"memo\": \"Tim’s private lessons\",\r\n\"teachers\": [1, 2],\r\n\"students\": [1, 2],\r\n\"rec_period\": \"1\",\r\n\"rec_count\": \"2\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/course",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update course info",
 					"request": {
 						"method": "PUT",
@@ -637,6 +703,25 @@
 									"key": "ClassRoom",
 									"value": "1.1"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete a course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/course/57",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"course",
+								"57"
 							]
 						}
 					},

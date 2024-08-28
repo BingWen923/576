@@ -248,8 +248,6 @@ CCourse.addNewCourse_ = (newCourse, result) => {
 
 // Update course by id
 CCourse.updateCourseById_ = (courseId, updateCourse, result) => {
-  console.log(JSON.stringify(updateCourse), '----------update---------------');
-
   const updateCourseData = {
     name: updateCourse.name,
     groupprivate: updateCourse.groupprivate,
@@ -261,17 +259,63 @@ CCourse.updateCourseById_ = (courseId, updateCourse, result) => {
     memo: updateCourse.memo
   };
 
-  db.query("UPDATE TbCourse SET ? WHERE course_id = ?", [updateCourseData, courseId], (err, res) => {
+  // Update students and teachers concurrently using Promise.all
+  const updateTasks = [
+    new Promise((resolve, reject) => {
+      CCourse.setStudentsToCourse_(courseId, updateCourse.students, (err, res) => {
+        if (err) {
+          console.log("Error updating students:", err);
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    }),
+    new Promise((resolve, reject) => {
+      CCourse.setTeachersToCourse_(courseId, updateCourse.teachers, (err, res) => {
+        if (err) {
+          console.log("Error updating teachers:", err);
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query("UPDATE TbCourse SET ? WHERE course_id = ?", [updateCourseData, courseId], (err, res) => {
+        if (err) {
+          console.log("Update course error:", err);
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    })
+  ];
+
+  Promise.all(updateTasks)
+    .then((responses) => {
+      console.log("Course updated successfully:", responses);
+      result(null, responses);
+    })
+    .catch((error) => {
+      console.log("Update course process failed:", error);
+      result(error, null);
+    });
+};
+
+
+// Delete course by id
+CCourse.deleteCourseById_ = (courseId, result) => {
+  db.query("CALL deleteCourse(?);", [courseId], (err, res) => {
     if (err) {
-      console.log("Update course error:", err);
+      console.log("Delete course error:", err);
       result(err, null);
       return;
     }
-    console.log("Course updated:", res);
     result(null, res);
   });
 };
-
 
 /************************************* students in a course ***********************************/
 // Set students to a course,students could be many
