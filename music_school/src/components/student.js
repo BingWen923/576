@@ -76,7 +76,7 @@ function Student() {
     };
 
     return (
-        <Container className="mt-5">
+        <Container className="mt-3">
             <Row>
                 <Col>
                     <h3>Student List</h3>

@@ -75,7 +75,7 @@ function Staff() {
     };
 
     return (
-        <Container className="mt-5">
+        <Container className="mt-3">
             <Row>
                 <Col>
                     <h3>Staff List</h3>
