@@ -8,7 +8,7 @@ import CourseList from './course_list';
 import { Container, Row, Col,  Modal } from 'react-bootstrap';
 
 // Main Course Component
-function Course() {
+function Course({viewMode}) {
     const [courseList, setCourseList] = useState([]);
     const [showModal, setShowModal] = useState(false); // State to control the visibility of the Modal
 
@@ -126,10 +126,10 @@ function Course() {
         setShowModal(true); // Open the modal
     };
 
-    return (
-        <Container className="mt-3">
-            <Row>
-                <Col>
+    const displayContent =  (vMode) => {
+        if (vMode === "list") {
+            return (
+                <React.Fragment>
                     <h3>Course List</h3>
                     <CourseList
                         courseList={courseList}
@@ -138,6 +138,20 @@ function Course() {
                         add1Course={handleAdd1Click}
                         addRecurringCourses={handleAddRecClick}
                     />
+                </React.Fragment>
+            );
+        } else if (vMode === "tcalendar") {
+            return <h3>Teacher's Calendar - Coming Soon</h3>;
+        } else if (vMode === "scalendar") {
+            return <h3>Student's Calendar - Coming Soon</h3>;
+        } 
+    };
+
+    return (
+        <Container className="mt-3">
+            <Row>
+                <Col>
+                    {displayContent(viewMode)}
                 </Col>
             </Row>
             {/* Modal for adding or editing course */}

@@ -6,7 +6,7 @@ import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
 import Staff from './components/staff.js';
 import Guardian from './components/guardian.js';
 import Student from './components/student.js'; 
-import CourseList from './components/course.js';   
+import Course from './components/course.js';   
 import Teacher from './components/teacher.js'; 
 
 function App() {
@@ -16,11 +16,11 @@ function App() {
     const renderContent = () => {
         switch (activePage) {
             case 'courseList':
-                return <CourseList />;
+                return <Course viewMode={"list"} />;
             case 'teacherCalendar':
-                return <div>Teacher's Calendar - Coming Soon</div>;
+                return <Course viewMode={"tcalendar"} />;
             case 'studentCalendar':
-                return <div>Student's Calendar - Coming Soon</div>;
+                return <Course viewMode={"scalendar"} />;
             case 'teacher':
                 return <Teacher />;
             case 'guardian':
