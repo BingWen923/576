@@ -219,3 +219,31 @@ exports.getAllTeachersFromCourse = (req, res) => {
         }
     });
 };
+
+// Get all courses of a specified teacher
+exports.getAllCoursesFromTeacher = (req, res) => {
+    CCourse.getAllCoursesFromTeacher_(req.params.teacherid, (err, courses) => {
+        if (err) {
+            res.status(500).json({
+                message: "Error occurred while retrieving courses for teacher: " + req.params.teacherid,
+                error: err
+            });
+        } else {
+            res.status(200).json(courses);
+        }
+    });
+};
+
+// Get all courses of a specified student
+exports.getAllCoursesFromStudent = (req, res) => {
+    CCourse.getAllCoursesFromStudent_(req.params.studentid, (err, courses) => {
+        if (err) {
+            res.status(500).json({
+                message: "Error occurred while retrieving courses for student: " + req.params.studentid,
+                error: err
+            });
+        } else {
+            res.status(200).json(courses);
+        }
+    });
+};

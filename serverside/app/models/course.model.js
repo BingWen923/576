@@ -497,4 +497,30 @@ CCourse.getAllTeachersFromCourse_ = (courseID, result) => {
   });
 };
 
+// Get all courses of a specified teacher 
+CCourse.getAllCoursesFromTeacher_ = (teacherid, result) => {
+  db.query("SELECT vc.* FROM view_course vc JOIN tbcourseteacher tct ON vc.course_id = tct.courseid WHERE tct.teacherid = ?",
+          teacherid, (err, res) => {
+    if (err) {
+      console.log("get courses for teacher error:", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
+// Get all courses of a specified student 
+CCourse.getAllCoursesFromStudent_ = (studentid, result) => {
+  db.query("SELECT vc.* FROM view_course vc JOIN tbcoursestudent tcs ON vc.course_id = tcs.courseid WHERE tcs.studentid = ?",
+          studentid, (err, res) => {
+    if (err) {
+      console.log("get courses for student error:", err);
+      result(null, err);
+      return;
+    }
+    result(null, res);
+  });
+};
+
 module.exports = CCourse;

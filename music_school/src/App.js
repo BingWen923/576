@@ -61,7 +61,6 @@ function App() {
             </Row>
 
             {/* Second Row: Sidebar and Content */}
-            
             <Row>
                 <Col id="111" className="nav-sidebar">
                     {/* Sidebar navigation */}

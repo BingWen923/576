@@ -25,6 +25,8 @@ require("./app/routes/musicschool.routes.js")(app);
 
 const PORT = process.env.PORT || 3000;
 
+process.env.TZ = 'UTC'; // important setting
+
 app.listen(PORT, () => {
   console.log(`CORS enabled Express web server is running on port ${PORT}.`);
 });

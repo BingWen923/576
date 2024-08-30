@@ -637,6 +637,46 @@
 					"response": []
 				},
 				{
+					"name": "courses of a teacher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/teacher/1/courses",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"teacher",
+								"1",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "courses of a student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/student/2/courses",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"student",
+								"2",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get course by id",
 					"request": {
 						"method": "GET",

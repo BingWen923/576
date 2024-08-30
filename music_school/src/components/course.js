@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-
 import './list_and_form.css';
 import './checkbox.css';
 import CourseForm from './course_form';
 import CourseList from './course_list';
+import CourseTeacherCalendar from './course_teacher_calendar';
+
 import { Container, Row, Col,  Modal } from 'react-bootstrap';
 
 // Main Course Component
 function Course({viewMode}) {
     const [courseList, setCourseList] = useState([]);
+    const [teacherCourses, setTeacherCourses] = useState([]);
     const [showModal, setShowModal] = useState(false); // State to control the visibility of the Modal
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
 
     ///////////////// State for the current course being edited or added or added recurring courses /////////////////////////
     const [currentCourse, setCurrentCourse_] = useState({
@@ -44,15 +47,44 @@ function Course({viewMode}) {
             .then(data => setCourseList(data))
             .catch(error => console.error("Error fetching course data:", error));
     };
+    // Function to fetch and refresh the courses for a specified teacher
+    const fetchCoursesForTeacher = () => {
+        console.log('Fetching courses for teacher...');
+        if (selectedTeacher && selectedTeacher.value) {
+        fetch(`http://localhost:3000/teacher/${selectedTeacher.value}/courses`)
+            .then(response => response.json())
+            .then(data => setTeacherCourses(data))
+            .catch(error => console.error("Error fetching course data:", error));
+        }
+    };
 
     useEffect(() => {
         // Fetch course list on the first component load
-        fetchCourseList();
+        refreshContents();
     }, []);
+
+    // refresh the calendar when selectedTeacher is changed
+    useEffect(() => {
+        if (viewMode === "tcalendar") {
+            fetchCoursesForTeacher();
+        }
+    }, [selectedTeacher]);
+
+    const refreshContents = () => {
+        console.log("viewMode :::::::::::::::::::",viewMode);
+        if (viewMode === "list") {
+            fetchCourseList();
+        } else if (viewMode === "tcalendar") {
+            fetchCoursesForTeacher();
+        } else if (viewMode === "scalendar") {
+            
+        } 
+    }
 
     // Function to handle adding or updating course information
     const handleAddOrUpdateCourse = (newOrUpdatedCourse) => {
         if (currentCourse.mode === "edit") {
+            console.log("*******out*********",newOrUpdatedCourse.starttime);
             // Update existing course
             fetch(`http://localhost:3000/course/${currentCourse.course_id}`, {
                 method: "PUT",
@@ -62,7 +94,7 @@ function Course({viewMode}) {
                 body: JSON.stringify(newOrUpdatedCourse)
             }).then(response => {
                 if (response.ok) {
-                    fetchCourseList(); // Refresh the course list
+                    refreshContents(); // Refresh the course list
                 }
             });
         } else if (currentCourse.mode === "add1" || currentCourse.mode === "addrec") {
@@ -79,7 +111,7 @@ function Course({viewMode}) {
             }).then(response => response.json())
               .then(data => {
                   if (data) {
-                      fetchCourseList(); // Refresh the course list
+                    refreshContents(); // Refresh the course list
                   }
               });
         }
@@ -90,6 +122,8 @@ function Course({viewMode}) {
     
     // Function to handle editing course (opens the modal)
     const handleEditClick = (course) => {
+        console.log("*******in*********");
+        console.log(course.starttime);
         setCurrentCourse(course);
         setShowModal(true); // Open the modal
     };
@@ -141,7 +175,18 @@ function Course({viewMode}) {
                 </React.Fragment>
             );
         } else if (vMode === "tcalendar") {
-            return <h3>Teacher's Calendar - Coming Soon</h3>;
+            return (
+                <React.Fragment>
+                    <h3>Teacher's Course Calendar</h3>
+                    <CourseTeacherCalendar
+                        teacherCourses={teacherCourses}
+                        selectedTeacher={selectedTeacher}
+                        setSelectedTeacher={setSelectedTeacher} 
+                        onEditClick={handleEditClick}
+                        onDeleteClick={handleDeleteClick}
+                    />
+                </React.Fragment>
+            );
         } else if (vMode === "scalendar") {
             return <h3>Student's Calendar - Coming Soon</h3>;
         } 

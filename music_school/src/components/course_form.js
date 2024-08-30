@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 import './list_and_form.css';
 import './checkbox.css';
-import { geneStudentId, formatDateTime } from './lib';
+import { geneStudentId, formatDateTime, fetchTeachersForSelectOptions } from './lib';
 import { Button, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 /********************** add/edit Course Form Component **********************/
@@ -75,17 +75,9 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
     /*************** get all teachers for the select ****************/
     const [teacherOptions, setTeacherOptions] = useState([]);
     useEffect(() => {
-        // Fetch the list of teachers when the form loads
-        fetch('http://localhost:3000/teacher')
-            .then(response => response.json())
-            .then(data => {
-                const options = data.map(teacher => ({
-                    value: teacher.teacher_id,
-                    label: teacher.name
-                }));
-                setTeacherOptions(options);
-            })
-            .catch(error => console.error("Error fetching teacher list:", error));
+        fetchTeachersForSelectOptions().then(options => {
+            setTeacherOptions(options);
+        });
     }, []);
 
     const handleChange = (e) => {

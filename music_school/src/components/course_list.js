@@ -88,7 +88,7 @@ function CourseList({ courseList, onEditClick, onDeleteClick, add1Course, addRec
             )
         }
     ];
-
+console.log(courseList);
     return (
         <>
             <Row className="mb-3 align-items-center justify-content-between">

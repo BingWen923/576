@@ -80,4 +80,10 @@ module.exports = app => {
   
   // Get all teachers in a course
   app.get('/course/teacher/:courseid', CCourse.getAllTeachersFromCourse);
+
+  // Get all courses of a specified teacher
+  app.get('/teacher/:teacherid/courses', CCourse.getAllCoursesFromTeacher);
+
+  // Get all courses of a specified student
+  app.get('/student/:studentid/courses', CCourse.getAllCoursesFromStudent);
 }
