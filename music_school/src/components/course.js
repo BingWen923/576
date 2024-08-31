@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import './list_and_form.css';
 import './checkbox.css';
 import CourseForm from './course_form';
 import CourseList from './course_list';
 import CourseTeacherCalendar from './course_teacher_calendar';
+import CourseStudentCalendar from './course_student_calendar';
+import {fetchCoursesForTeacher, fetchCoursesForStudent, fetchCourseList} from './lib';
 
 import { Container, Row, Col,  Modal } from 'react-bootstrap';
 
 // Main Course Component
 function Course({viewMode}) {
     const [courseList, setCourseList] = useState([]);
-    const [teacherCourses, setTeacherCourses] = useState([]);
     const [showModal, setShowModal] = useState(false); // State to control the visibility of the Modal
+    const [teacherCourses, setTeacherCourses] = useState([]);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
+    const [studentCourses, setStudentCourses] = useState([]);
+    const [selectedStudent, setSelectedStudent] = useState(null);
 
     ///////////////// State for the current course being edited or added or added recurring courses /////////////////////////
     const [currentCourse, setCurrentCourse_] = useState({
         mode: "add1" // Initial mode when the component loads for the first time
     });
+
     // Custom setCurrentCourse function
     const setCurrentCourse = (value) => {
         if (value === null ||
@@ -38,53 +43,38 @@ function Course({viewMode}) {
             });
         }
     };
-
-    // Function to fetch and refresh the course list
-    const fetchCourseList = () => {
-        console.log('Fetching course list...');
-        fetch("http://localhost:3000/course")
-            .then(response => response.json())
-            .then(data => setCourseList(data))
-            .catch(error => console.error("Error fetching course data:", error));
-    };
-    // Function to fetch and refresh the courses for a specified teacher
-    const fetchCoursesForTeacher = () => {
-        console.log('Fetching courses for teacher...');
-        if (selectedTeacher && selectedTeacher.value) {
-        fetch(`http://localhost:3000/teacher/${selectedTeacher.value}/courses`)
-            .then(response => response.json())
-            .then(data => setTeacherCourses(data))
-            .catch(error => console.error("Error fetching course data:", error));
+  
+    const refreshContents = useCallback(() => {
+        console.log("viewMode :::::::::::::::::::", viewMode);
+        switch(viewMode) {
+            case "list":
+                fetchCourseList().then((courses) => {
+                    setCourseList(courses);
+                });
+                break;
+            case "tcalendar":
+                fetchCoursesForTeacher(selectedTeacher).then((courses) => {
+                    setTeacherCourses(courses);
+                });
+                break;
+            case "scalendar":
+                fetchCoursesForStudent(selectedStudent).then((courses) => {
+                    setStudentCourses(courses);
+                });
+                break;
+            default:
+                break;
         }
-    };
+    }, [viewMode, selectedTeacher, selectedStudent]); // Dependencies
 
     useEffect(() => {
-        // Fetch course list on the first component load
         refreshContents();
-    }, []);
+    }, [refreshContents]); // Add refreshContents as a dependency
 
-    // refresh the calendar when selectedTeacher is changed
-    useEffect(() => {
-        if (viewMode === "tcalendar") {
-            fetchCoursesForTeacher();
-        }
-    }, [selectedTeacher]);
-
-    const refreshContents = () => {
-        console.log("viewMode :::::::::::::::::::",viewMode);
-        if (viewMode === "list") {
-            fetchCourseList();
-        } else if (viewMode === "tcalendar") {
-            fetchCoursesForTeacher();
-        } else if (viewMode === "scalendar") {
-            
-        } 
-    }
 
     // Function to handle adding or updating course information
     const handleAddOrUpdateCourse = (newOrUpdatedCourse) => {
         if (currentCourse.mode === "edit") {
-            console.log("*******out*********",newOrUpdatedCourse.starttime);
             // Update existing course
             fetch(`http://localhost:3000/course/${currentCourse.course_id}`, {
                 method: "PUT",
@@ -99,9 +89,6 @@ function Course({viewMode}) {
             });
         } else if (currentCourse.mode === "add1" || currentCourse.mode === "addrec") {
             // Add new course or add recurring courses
-            console.log("1111111111111111");
-            console.log(newOrUpdatedCourse);
-            console.log("22222222222222222222");
             fetch("http://localhost:3000/course", {
                 method: "POST",
                 headers: {
@@ -122,8 +109,6 @@ function Course({viewMode}) {
     
     // Function to handle editing course (opens the modal)
     const handleEditClick = (course) => {
-        console.log("*******in*********");
-        console.log(course.starttime);
         setCurrentCourse(course);
         setShowModal(true); // Open the modal
     };
@@ -183,12 +168,21 @@ function Course({viewMode}) {
                         selectedTeacher={selectedTeacher}
                         setSelectedTeacher={setSelectedTeacher} 
                         onEditClick={handleEditClick}
-                        onDeleteClick={handleDeleteClick}
                     />
                 </React.Fragment>
             );
         } else if (vMode === "scalendar") {
-            return <h3>Student's Calendar - Coming Soon</h3>;
+            return (
+                <React.Fragment>
+                    <h3>Student's Course Calendar</h3>
+                    <CourseStudentCalendar
+                        studentCourses={studentCourses}
+                        selectedStudent={selectedStudent}
+                        setSelectedStudent={setSelectedStudent}
+                        onEditClick={handleEditClick}
+                    />
+                </React.Fragment>
+            )
         } 
     };
 

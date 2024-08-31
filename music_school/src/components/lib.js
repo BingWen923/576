@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+//import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaSortUp, FaSortDown, FaSort } from 'react-icons/fa';
 
@@ -50,6 +50,72 @@ export const fetchTeachersForSelectOptions = () => {
         })
         .catch(error => {
             console.error("Error fetching teacher list:", error);
+            return [];
+        });
+};
+
+/*************** get all students for the select ****************/
+export const fetchStudentsForSelectOptions = () => {
+    return fetch('http://localhost:3000/student')
+        .then(response => response.json())
+        .then(data => {
+            const options = data.map(student => ({
+                value: student.student_id,
+                label: `${geneStudentId(student.student_id)} | ${student.name}`
+            }));
+            return options;
+        })
+        .catch(error => {
+            console.error("Error fetching student list:", error);
+            return [];
+        });
+};
+
+// Function to fetch and refresh the courses for a specified teacher
+export const fetchCoursesForTeacher = (selectedTeacher) => {
+    console.log('Fetching courses for teacher...');
+    if (selectedTeacher && selectedTeacher.value) {
+        return fetch(`http://localhost:3000/teacher/${selectedTeacher.value}/courses`)
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error("Error fetching teacher course data:", error);
+                return [];
+            });
+    } else {
+        return Promise.resolve([]);
+    }
+};
+
+// Function to fetch and refresh the courses for a specified student
+export const fetchCoursesForStudent = (selectedStudent) => {
+    console.log('Fetching courses for student...');
+    if (selectedStudent && selectedStudent.value) {
+        return fetch(`http://localhost:3000/student/${selectedStudent.value}/courses`)
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.error("Error fetching student course data:", error);
+                return [];
+            });
+    } else {
+        return Promise.resolve([]);
+    }
+};
+
+// Function to fetch and refresh the course list
+export const fetchCourseList = () => {
+    return fetch("http://localhost:3000/course")
+        .then(response => response.json())
+        .then(data => { 
+            return data;
+        })
+        .catch(error => {
+            console.error("Error fetching course for list:", error);
             return [];
         });
 };

@@ -5,28 +5,28 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import './list_and_form.css';
-import { fetchTeachersForSelectOptions, formatTime } from './lib';
-import { Row, Col, Button, FormGroup, FormLabel } from 'react-bootstrap';
+import { fetchStudentsForSelectOptions, formatTime } from './lib';
+import { Row, Col } from 'react-bootstrap';
 
 // Setup the localizer by providing the moment (or globalize) object to the correct localizer.
 const localizer = momentLocalizer(moment);
 
 /********************************** Course List Component *****************************/
-function CourseTeacherCalendar({ teacherCourses=[], selectedTeacher, setSelectedTeacher, onEditClick }) {
-    const [teacherOptions, setTeacherOptions] = useState([]);
+function CourseStudentCalendar({ studentCourses = [], selectedStudent, setSelectedStudent, onEditClick }) {
+    const [studentOptions, setStudentOptions] = useState([]);
 
     useEffect(() => {
-        fetchTeachersForSelectOptions().then(options => {
-            setTeacherOptions(options);
+        fetchStudentsForSelectOptions().then(options => {
+            setStudentOptions(options);
         });
     }, []);
 
-    const handleTeacherChange = (selectedOption) => {
-        setSelectedTeacher(selectedOption);
+    const handleStudentChange = (selectedOption) => {
+        setSelectedStudent(selectedOption);
     };
 
     // Convert courseList to calendar events
-    const events = teacherCourses.map(course => ({
+    const events = studentCourses.map(course => ({
         title: `${course.name} ${course.classroom}`,
         start: new Date(course.starttime),
         end: new Date(course.endtime),
@@ -39,11 +39,11 @@ function CourseTeacherCalendar({ teacherCourses=[], selectedTeacher, setSelected
         <>
             <Row>
                 <Select
-                    name="teacher"
-                    options={teacherOptions}
-                    value={selectedTeacher}
-                    onChange={handleTeacherChange}
-                    placeholder={"Select the teacher"}
+                    name="student"
+                    options={studentOptions}
+                    value={selectedStudent}
+                    onChange={handleStudentChange}
+                    placeholder={"Select the student"}
                     styles={{ container: (provided) => ({ ...provided, width: 360 }) }}
                 />
             </Row>
@@ -56,7 +56,7 @@ function CourseTeacherCalendar({ teacherCourses=[], selectedTeacher, setSelected
                         events={events}
                         startAccessor="start"
                         endAccessor="end"
-                        defaultView="week"
+                        defaultView="month"
                         style={{ height: 600 }}
                         onDoubleClickEvent={(event) => onEditClick(event.resource)}
                     />
@@ -66,4 +66,4 @@ function CourseTeacherCalendar({ teacherCourses=[], selectedTeacher, setSelected
     );
 }
 
-export default CourseTeacherCalendar;
+export default CourseStudentCalendar;
