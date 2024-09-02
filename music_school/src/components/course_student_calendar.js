@@ -59,6 +59,8 @@ function CourseStudentCalendar({ studentCourses = [], selectedStudent, setSelect
                         defaultView="month"
                         style={{ height: 600 }}
                         onDoubleClickEvent={(event) => onEditClick(event.resource)}
+                        min={new Date(2024, 7, 1, 8, 0, 0)}  // Start time: 8:00 AM
+                        max={new Date(2024, 7, 1, 22, 0, 0)} // End time: 10:00 PM
                     />
                 </Col>
             </Row>

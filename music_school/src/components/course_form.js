@@ -77,6 +77,17 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
         });
     };
 
+    const handleTimeChange = (e) => {
+        const { value } = e.target;
+        const timeValue = new Date(value).getHours();
+
+        if (timeValue < 8 || timeValue > 22) {
+            alert('Please select a time between 08:00 and 22:00');
+            return; // Prevent updating the form data if the time is invalid
+        }
+        handleChange(e);
+    };
+
     const handleStudentsChange = (selectedOptions) => {
         const studentList = selectedOptions.map(option => option.value);
         setFormData({
@@ -223,7 +234,7 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
                     type="datetime-local"
                     name="starttime"
                     value={formData.starttime}
-                    onChange={handleChange}
+                    onChange={handleTimeChange}
                     required
                     style={{ width: "200px" }}
                 />
@@ -232,7 +243,7 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
                     type="datetime-local"
                     name="endtime"
                     value={formData.endtime}
-                    onChange={handleChange}
+                    onChange={handleTimeChange}
                     required
                     style={{ width: "200px" }}
                 />

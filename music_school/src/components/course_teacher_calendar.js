@@ -6,7 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import './list_and_form.css';
 import { fetchTeachersForSelectOptions, formatTime } from './lib';
-import { Row, Col, Button, FormGroup, FormLabel } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 // Setup the localizer by providing the moment (or globalize) object to the correct localizer.
 const localizer = momentLocalizer(moment);
@@ -59,6 +59,8 @@ function CourseTeacherCalendar({ teacherCourses=[], selectedTeacher, setSelected
                         defaultView="week"
                         style={{ height: 600 }}
                         onDoubleClickEvent={(event) => onEditClick(event.resource)}
+                        min={new Date(2024, 7, 1, 8, 0, 0)}  // Start time: 8:00 AM
+                        max={new Date(2024, 7, 1, 22, 0, 0)} // End time: 10:00 PM
                     />
                 </Col>
             </Row>
