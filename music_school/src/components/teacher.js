@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { renderSortCaret } from './lib';
+import { API_BASE_URL, renderSortCaret } from './lib';
 import './list_and_form.css';
 import './checkbox.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
@@ -15,7 +15,7 @@ function Teacher() {
     // Function to fetch and refresh the teacher list
     const fetchTeacherList = () => {
         console.log('Fetching teacher list...');
-        fetch("http://localhost:3000/teacher")
+        fetch(`${API_BASE_URL}/teacher`)
             .then(response => response.json())
             .then(data => setTeacherList(data))
             .catch(error => console.error("Error fetching teacher data:", error));
@@ -30,7 +30,7 @@ function Teacher() {
     const handleAddOrUpdateTeacher = (newOrUpdatedTeacher) => {
         if (editingTeacher) {
             // Update existing teacher
-            fetch(`http://localhost:3000/teacher/${editingTeacher.teacher_id}`, {
+            fetch(`${API_BASE_URL}/teacher/${editingTeacher.teacher_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -46,7 +46,7 @@ function Teacher() {
             });
         } else {
             // Add new teacher
-            fetch("http://localhost:3000/teacher", {
+            fetch(`${API_BASE_URL}/teacher`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

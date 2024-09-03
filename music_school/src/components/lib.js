@@ -2,6 +2,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaSortUp, FaSortDown, FaSort } from 'react-icons/fa';
 
+// url for the app
+export const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000`;
+
 // Global function to determine the sort caret icon for all list
 export const renderSortCaret = (order) => {
     if (!order) return <FaSort />;
@@ -39,7 +42,7 @@ export const geneStudentId = (student_id) => {
 
 /*************** get all teachers for the select ****************/
 export const fetchTeachersForSelectOptions = () => {
-    return fetch('http://localhost:3000/teacher')
+    return fetch(`${API_BASE_URL}/teacher`)
         .then(response => response.json())
         .then(data => {
             const options = data.map(teacher => ({
@@ -56,7 +59,7 @@ export const fetchTeachersForSelectOptions = () => {
 
 /*************** get all students for the select ****************/
 export const fetchStudentsForSelectOptions = () => {
-    return fetch('http://localhost:3000/student')
+    return fetch(`${API_BASE_URL}/student`)
         .then(response => response.json())
         .then(data => {
             const options = data.map(student => ({
@@ -75,7 +78,7 @@ export const fetchStudentsForSelectOptions = () => {
 export const fetchCoursesForTeacher = (selectedTeacher) => {
     console.log('Fetching courses for teacher...');
     if (selectedTeacher && selectedTeacher.value) {
-        return fetch(`http://localhost:3000/teacher/${selectedTeacher.value}/courses`)
+        return fetch(`${API_BASE_URL}/teacher/${selectedTeacher.value}/courses`)
             .then(response => response.json())
             .then(data => {
                 return data;
@@ -93,7 +96,7 @@ export const fetchCoursesForTeacher = (selectedTeacher) => {
 export const fetchCoursesForStudent = (selectedStudent) => {
     console.log('Fetching courses for student...');
     if (selectedStudent && selectedStudent.value) {
-        return fetch(`http://localhost:3000/student/${selectedStudent.value}/courses`)
+        return fetch(`${API_BASE_URL}/student/${selectedStudent.value}/courses`)
             .then(response => response.json())
             .then(data => {
                 return data;
@@ -109,7 +112,7 @@ export const fetchCoursesForStudent = (selectedStudent) => {
 
 // Function to fetch and refresh the course list
 export const fetchCourseList = () => {
-    return fetch("http://localhost:3000/course")
+    return fetch(`${API_BASE_URL}/course`)
         .then(response => response.json())
         .then(data => { 
             return data;

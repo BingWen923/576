@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import Select from 'react-select';
-import { renderSortCaret,geneStudentId } from './lib';
+import { API_BASE_URL, renderSortCaret,geneStudentId } from './lib';
 import './list_and_form.css';
 import './checkbox.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
@@ -16,7 +16,7 @@ function Student() {
     // Function to fetch and refresh the student list
     const fetchStudentList = () => {
         console.log('Fetching student list...');
-        fetch("http://localhost:3000/student")
+        fetch(`${API_BASE_URL}/student`)
             .then(response => response.json())
             .then(data => setStudentList(data))
             .catch(error => console.error("Error fetching student data:", error));
@@ -31,7 +31,7 @@ function Student() {
     const handleAddOrUpdateStudent = (newOrUpdatedStudent) => {
         if (editingStudent) {
             // Update existing student
-            fetch(`http://localhost:3000/student/${editingStudent.student_id}`, {
+            fetch(`${API_BASE_URL}/student/${editingStudent.student_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -47,7 +47,7 @@ function Student() {
             });
         } else {
             // Add new student
-            fetch("http://localhost:3000/student", {
+            fetch(`${API_BASE_URL}/student`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -234,7 +234,7 @@ function StudentForm({ onSubmit, editingStudent, setEditingStudent, setShowModal
     }));
     useEffect(() => {
         // Fetch the list of guardians
-        fetch("http://localhost:3000/guardian")
+        fetch(`${API_BASE_URL}/guardian`)
             .then(response => response.json())
             .then(data => setGuardianList(data))
             .catch(error => console.error("Error fetching guardian data:", error));

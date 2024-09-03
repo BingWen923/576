@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 import './list_and_form.css';
 import './checkbox.css';
-import { formatDateTime, fetchTeachersForSelectOptions, fetchStudentsForSelectOptions } from './lib';
+import { API_BASE_URL, formatDateTime, fetchTeachersForSelectOptions, fetchStudentsForSelectOptions } from './lib';
 import { Button, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 /********************** add/edit Course Form Component **********************/
@@ -29,11 +29,11 @@ function CourseForm({ onSubmit, currentCourse, setCurrentCourse, setShowModal })
             // Fetch the teachers in the course
             const fetchTeachersAndStudents = async () => {
                 try {
-                    const teachersResponse = await fetch(`http://localhost:3000/course/teacher/${currentCourse.course_id}`);
+                    const teachersResponse = await fetch(`${API_BASE_URL}/course/teacher/${currentCourse.course_id}`);
                     const teachersData = await teachersResponse.json();
                     const teachers = teachersData.map(teacher => teacher.teacher_id);
     
-                    const studentsResponse = await fetch(`http://localhost:3000/course/student/${currentCourse.course_id}`);
+                    const studentsResponse = await fetch(`${API_BASE_URL}/course/student/${currentCourse.course_id}`);
                     const studentsData = await studentsResponse.json();
                     const students = studentsData.map(student => student.student_id);
     

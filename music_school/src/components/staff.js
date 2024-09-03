@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 //import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-import { renderSortCaret,formatDate } from './lib';
+import { API_BASE_URL, renderSortCaret,formatDate } from './lib';
 import './list_and_form.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
@@ -15,7 +15,7 @@ function Staff() {
     // Function to fetch and refresh the staff list
     const fetchStaffList = () => {
         console.log('Fetching staff list...');
-        fetch("http://localhost:3000/staff")
+        fetch(`${API_BASE_URL}/staff`)
             .then(response => response.json())
             .then(data => setStaffList(data))
             .catch(error => console.error("Error fetching staff data:", error));
@@ -30,7 +30,7 @@ function Staff() {
     const handleAddOrUpdateStaff = (newOrUpdatedStaff) => {
         if (editingStaff) {
              // Update existing staff
-            fetch(`http://localhost:3000/staff/${editingStaff.staff_id}`, {
+            fetch(`${API_BASE_URL}/staff/${editingStaff.staff_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -46,7 +46,7 @@ function Staff() {
             });
         } else {
             // Add new staff
-            fetch("http://localhost:3000/staff", {
+            fetch(`${API_BASE_URL}/staff`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

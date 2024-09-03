@@ -6,7 +6,7 @@ import CourseForm from './course_form';
 import CourseList from './course_list';
 import CourseTeacherCalendar from './course_teacher_calendar';
 import CourseStudentCalendar from './course_student_calendar';
-import {fetchCoursesForTeacher, fetchCoursesForStudent, fetchCourseList} from './lib';
+import {API_BASE_URL, fetchCoursesForTeacher, fetchCoursesForStudent, fetchCourseList} from './lib';
 
 import { Container, Row, Col,  Modal } from 'react-bootstrap';
 
@@ -76,7 +76,7 @@ function Course({viewMode}) {
     const handleAddOrUpdateCourse = (newOrUpdatedCourse) => {
         if (currentCourse.mode === "edit") {
             // Update existing course
-            fetch(`http://localhost:3000/course/${currentCourse.course_id}`, {
+            fetch(`${API_BASE_URL}/course/${currentCourse.course_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -89,7 +89,7 @@ function Course({viewMode}) {
             });
         } else if (currentCourse.mode === "add1" || currentCourse.mode === "addrec") {
             // Add new course or add recurring courses
-            fetch("http://localhost:3000/course", {
+            fetch(`${API_BASE_URL}/course`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -117,7 +117,7 @@ function Course({viewMode}) {
         const confirmation = window.confirm(`Are you sure you want to delete the course "${course.name}"? This action cannot be undone.`);
     
         if (confirmation) {
-            fetch(`http://localhost:3000/course/${course.course_id}`, {
+            fetch(`${API_BASE_URL}/course/${course.course_id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"

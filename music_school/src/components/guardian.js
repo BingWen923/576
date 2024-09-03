@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { renderSortCaret } from './lib';
+import { API_BASE_URL, renderSortCaret } from './lib';
 import './list_and_form.css';
 import { Container, Row, Col, Button, Modal, Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
@@ -14,7 +14,7 @@ function Guardian() {
     // Function to fetch and refresh the guardian list
     const fetchGuardianList = () => {
         console.log('Fetching guardian list...');
-        fetch("http://localhost:3000/guardian")
+        fetch(`${API_BASE_URL}/guardian`)
             .then(response => response.json())
             .then(data => setGuardianList(data))
             .catch(error => console.error("Error fetching guardian data:", error));
@@ -29,7 +29,7 @@ function Guardian() {
     const handleAddOrUpdateGuardian = (newOrUpdatedGuardian) => {
         if (editingGuardian) {
             // Update existing guardian
-            fetch(`http://localhost:3000/guardian/${editingGuardian.guardian_id}`, {
+            fetch(`${API_BASE_URL}/guardian/${editingGuardian.guardian_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -45,7 +45,7 @@ function Guardian() {
             });
         } else {
             // Add new guardian
-            fetch("http://localhost:3000/guardian", {
+            fetch(`${API_BASE_URL}/guardian`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
