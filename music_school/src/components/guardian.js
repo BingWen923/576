@@ -305,6 +305,7 @@ function GuardianForm({ onSubmit, editingGuardian, setEditingGuardian, setShowMo
                     value={formData.guardianrelation}
                     onChange={handleChange}
                 >
+                    <option value="">N/A</option>
                     <option value="father">Father</option>
                     <option value="mother">Mother</option>
                     <option value="grandparents">Grandparents</option>

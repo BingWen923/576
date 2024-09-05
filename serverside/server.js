@@ -11,17 +11,21 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Music School Course Management System" });
-});
-
 require("./app/routes/musicschool.routes.js")(app);
 
+const path = require('path');
+const port = process.env.PORT || 3000;
 
-// Start the server running. Once the server is running, the given function will be called, which will
-// log a simple message to the server console. Any console.log() statements in your Node.js code
-// can be seen in the terminal window used to run the server.
+// Middleware or API routes for backend
+// e.g., app.use('/api', yourApiRoutes);
+
+// Serve static files from the React frontend 
+app.use(express.static(path.join(__dirname, '../music_school/build')));
+
+// Handle any requests that don't match API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../music_school/build', 'index.html'));
+});
 
 const PORT = process.env.PORT || 3000;
 
