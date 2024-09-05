@@ -11,6 +11,16 @@ DROP TABLE IF EXISTS `tbstudent`;
 DROP TABLE IF EXISTS `tbguardian`;
 DROP TABLE IF EXISTS `tbuser`;
 
+DROP TABLE IF EXISTS `app_settings`;
+CREATE TABLE app_settings (
+    setting_id INT AUTO_INCREMENT PRIMARY KEY, 
+    setting_key VARCHAR(255) NOT NULL, 
+    setting_value VARCHAR(255),   
+    description VARCHAR(255),                
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
+);
+
 CREATE TABLE `tbuser` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -139,8 +149,50 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
-/***************************** create stored procedure ***************************/
 
+DROP PROCEDURE IF EXISTS `autoCompleteCourses`;
+DELIMITER $$
+/* Automatically change scheduled courses to completed status when the course time meets the criteria. */
+CREATE PROCEDURE autoCompleteCourses(IN beforeTime DATETIME)
+BEGIN
+  -- Update scheduled courses to completed status if both starttime and endtime are before the given datetime
+  UPDATE tbcourse 
+  SET status = 'completed' 
+  WHERE status = 'scheduled'
+    AND starttime < beforeTime
+    AND endtime < beforeTime;
+END $$
+
+DELIMITER ;
+/***************************** create stored procedure end ***************************/
+
+/***************************** create event for scheduled process **************************/
+DROP EVENT IF EXISTS `auto_complete_scheduled_courses`;
+-- Create an event to automatically complete courses at 3 AM daily
+DELIMITER $$
+CREATE EVENT auto_complete_scheduled_courses
+ON SCHEDULE EVERY 1 DAY
+STARTS '2024-09-05 03:00:00' -- Start running the event from a specific date at 3 AM
+DO
+BEGIN
+    -- Check if the 'auto_course_complete' setting is 'on' in the app_settings table
+    IF (SELECT setting_value FROM app_settings WHERE setting_key = 'auto_course_complete') = 'on' THEN
+        -- Call the stored procedure to mark all courses before today's midnight as completed
+        CALL autoCompleteCourses(NOW() - INTERVAL 3 HOUR);
+    END IF;
+END $$
+DELIMITER ;
+/***************************** create event end **************************/
+
+/***************************** initialize setting records **************************/
+INSERT INTO `app_settings` (`setting_key`, `setting_value`)
+VALUES('auto_course_complete', 'on');
+INSERT INTO `app_settings` (`setting_key`, `setting_value`)
+VALUES('auto_email_teacher', 'weekly');		
+INSERT INTO `app_settings` (`setting_key`, `setting_value`)
+VALUES('auto_email_student', 'monthly');
+
+/**************** initialize some test data *****************/
 INSERT INTO `tbuser` (`name`, `phone`, `email`, `address`, `memo`, `isteacher`)
 VALUES ('David Doe', '123-456-7890', 'john.doe@example.com', '123 Main St', 'Experienced music teacher', true);
 INSERT INTO `tbteacher` (`userid`, `status`, `specialties`)

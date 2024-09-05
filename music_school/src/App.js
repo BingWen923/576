@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
 
+import Settings from './components/settings.js';
 import Staff from './components/staff.js';
 import Guardian from './components/guardian.js';
 import Student from './components/student.js'; 
@@ -27,6 +28,8 @@ function App() {
                 return <Guardian />;
             case 'staff':
                 return <Staff />;
+            case 'settings':
+                return <Settings />;
             default:
             case 'student':
                 return <Student />;
@@ -99,11 +102,15 @@ function App() {
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link id="222" active={activePage === 'staff'} onClick={() => setActivePage('staff')}>
+                            <Nav.Link active={activePage === 'staff'} onClick={() => setActivePage('staff')}>
                                 Staff
                             </Nav.Link>
                         </Nav.Item>
-                    </Nav>
+                        <Nav.Item>
+                            <Nav.Link active={activePage === 'settings'} onClick={() => setActivePage('settings')}>
+                                Settings
+                            </Nav.Link>
+                        </Nav.Item>                    </Nav>
                 </Col>
 
                 <Col className="content-area">

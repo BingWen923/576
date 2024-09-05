@@ -1,6 +1,11 @@
 const { get } = require("express/lib/response");
 
 module.exports = app => {
+  /************************ settings routes *****************************/
+  const CSettings = require("../controllers/settings.controller");
+  app.get('/settings', CSettings.getAllSettings);
+  app.put('/settings', CSettings.updateSettings);
+
   /************************ teacher routes *****************************/
   const CTeacher = require("../controllers/teacher.controller");
   app.get('/teacher', CTeacher.getAllTeachers);
