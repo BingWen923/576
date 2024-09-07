@@ -7,6 +7,56 @@
 	},
 	"item": [
 		{
+			"name": "Application Settings",
+			"item": [
+				{
+					"name": "get settings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/settings",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update settings",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"auto_course_complete\": \"on\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/settings",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"settings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "teacher",
 			"item": [
 				{
