@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
+import { initializeApp } from "firebase/app"; // Import initializeApp from Firebase
+import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth"; // Import necessary Firebase functions
 
 import Settings from './components/settings.js';
 import Staff from './components/staff.js';
@@ -10,8 +12,73 @@ import Student from './components/student.js';
 import Course from './components/course.js';   
 import Teacher from './components/teacher.js'; 
 
+// ISOM Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBFNlr9RxFh8cVnRe1fFK5TxJ3in9ctZTI",
+    authDomain: "musicschool-bingwen.firebaseapp.com",
+    projectId: "musicschool-bingwen",
+    storageBucket: "musicschool-bingwen.appspot.com",
+    messagingSenderId: "48494957166",
+    appId: "1:48494957166:web:8d91c679eab57b0c9bcc7f"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
 function App() {
     const [activePage, setActivePage] = useState('student'); // Set initial active page to 'student'
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+
+     // Logout function
+     const handleLogout = () => {
+        signOut(auth).then(() => {
+            setUser(null); // Clear the user state
+            console.log("User logged out");
+        }).catch((error) => {
+            console.error("Error logging out: ", error);
+        });
+    };
+
+    // Function to handle login
+    const handleLogin = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                setUser(result.user);
+                console.log("User signed in");
+            })
+            .catch((error) => {
+                console.error("Error during login: ", error);
+            });
+    };
+
+    useEffect(() => {
+        // Listen for changes in authentication state
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user); // User is signed in
+            } else {
+                setUser(null); // User is signed out
+            }
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, [auth]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!user) {
+        return (
+            <div>
+                <h2>Please sign in to access the application</h2>
+                <button onClick={handleLogin}>Sign in with Google</button>
+            </div>
+        );
+    }
 
     // Function to render content based on selected page
     const renderContent = () => {
@@ -55,8 +122,9 @@ function App() {
                                 Irvine School of Music
                             </Navbar.Brand>
                             <Nav className="ml-auto">
+                                <Nav.Link>Welcome "{user.displayName}"</Nav.Link>
                                 <Nav.Link href="https://www.irvineschoolofmusic.com/">Home</Nav.Link>
-                                <Nav.Link href="https://www.irvineschoolofmusic.com/about-us/">About</Nav.Link>
+                                <Nav.Link onClick={handleLogout}>Logout</Nav.Link> 
                             </Nav>
                         </Container>
                     </Navbar>
@@ -110,7 +178,8 @@ function App() {
                             <Nav.Link active={activePage === 'settings'} onClick={() => setActivePage('settings')}>
                                 Settings
                             </Nav.Link>
-                        </Nav.Item>                    </Nav>
+                        </Nav.Item>                    
+                    </Nav>
                 </Col>
 
                 <Col className="content-area">
