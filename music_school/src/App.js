@@ -73,12 +73,18 @@ function App() {
 
     if (!user) {
         return (
-            <div>
-                <h2>Please sign in to access the application</h2>
-                <button onClick={handleLogin}>Sign in with Google</button>
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <h2>Welcome to the Irvine School of Music Portal</h2>
+                <p>Please log in to manage the school courses.</p>
+                <button onClick={handleLogin} style={{ padding: '10px 20px', backgroundColor: '#2a56c6', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                    <img src="google-icon.svg"
+                        alt="Google Logo" style={{ width: '30px', marginRight: '10px' }} />
+                    Sign in with Google
+                </button>
             </div>
         );
     }
+    
 
     // Function to render content based on selected page
     const renderContent = () => {
