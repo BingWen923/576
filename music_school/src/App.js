@@ -23,7 +23,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 function App() {
     const [activePage, setActivePage] = useState('student'); // Set initial active page to 'student'

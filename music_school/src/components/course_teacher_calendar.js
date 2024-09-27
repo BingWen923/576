@@ -26,14 +26,19 @@ function CourseTeacherCalendar({ teacherCourses=[], selectedTeacher, setSelected
     };
 
     // Convert courseList to calendar events
-    const events = teacherCourses.map(course => ({
-        title: `${course.name} ${course.classroom}`,
-        start: new Date(course.starttime),
-        end: new Date(course.endtime),
-        resource: course,  // Store the entire course object in resource
-        desc: `${formatTime(course.starttime)} - ${formatTime(course.endtime)} ${course.name} ${course.classroom}`,        
-        tooltip: `${formatTime(course.starttime)} - ${formatTime(course.endtime)} ${course.name} ${course.classroom}`
-    }));
+    const events = teacherCourses.map(course => {
+        const localStart = new Date(course.starttime.replace('T', ' ').replace('Z', ''));
+        const localEnd = new Date(course.endtime.replace('T', ' ').replace('Z', ''));
+
+        return {
+            title: `${course.name} ${course.classroom}`,
+            start: localStart,
+            end: localEnd,
+            resource: course,  // Store the entire course object in resource
+            desc: `${formatTime(course.starttime)} - ${formatTime(course.endtime)} ${course.name} ${course.classroom}`,
+            tooltip: `${formatTime(course.starttime)} - ${ formatTime(course.endtime) } ${ course.name } ${ course.classroom }`
+        };
+    });
 
     return (
         <>
